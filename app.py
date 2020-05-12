@@ -7,8 +7,6 @@ app = Flask(__name__)
 def index():
         return render_template("login.html")
 
-
-
 @app.route('/selection',methods=['POST'])
 def selection():
     
@@ -24,6 +22,7 @@ def selection():
 @app.route("/searchengine")
 def searchengine():
     return render_template("searchengine.html")
+
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
@@ -32,7 +31,13 @@ def dashboard():
 def login():
     return render_template("login.html")
 
-'''
+@app.route("/upload")
+def upload():
+    return render_template("upload.html")
+
+@app.route("/analyse")
+def analyse():
+    return render_template("analyse.html")
 
 @app.route("/wordcloud")
 def wordcloud():
@@ -46,9 +51,9 @@ def summarization():
 def qna():
     return render_template("qna.html")
 
-# @app.route("/profile")
-# def profile():
-#     return render_template("profile.html")'''
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True,use_reloader=True)

@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Search Engine</title>
+  <title>Analyse</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../static/vendors/base/vendor.bundle.base.css">
@@ -191,11 +191,29 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/upload">
+            <a class="nav-link" href="/wordcloud">
               <i class="mdi mdi-chart-pie menu-icon"></i>
-              <span class="menu-title">Upload</span>
+              <span class="menu-title">Wordcloud</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="summarization">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Summarization</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="qna">
+              <i class="mdi mdi-emoticon menu-icon"></i>
+              <span class="menu-title">QnA</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="/analyse">
+              <i class="mdi mdi-chart-pie menu-icon"></i>
+              <span class="menu-title">Analyse Document</span>
+            </a>
+          </li> -->
           
           <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
@@ -643,45 +661,24 @@
             <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Inline forms</h4>
+                  <h4 class="card-title">Upload Document</h4>
                   <p class="card-description">
                     <!-- Use the <code>.form-inline</code> class to display a series of labels, form controls, and buttons on a single horizontal row -->
                   </p>
                   <form class="form-inline">
 
-                      <!-- <div class="input-group"> -->
-                        <!-- <div class="input-group-prepend"> -->
-                          <button class="form-control mb-2 mr-sm-2 btn btn-lg btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-right: 10px;">Select Engine</button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
-                          </div>
-                        <!-- </div> -->
-                        <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button"> -->
-                      <!-- </div> -->
-                      
-                    <label class="sr-only" for="inlineFormInputName2">Topic</label>
-                    <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="Topic">
-
-                    <label class="sr-only" for="inlineFormInputGroupUsername2">Results</label>
-                    <div class="input-group mb-2 mr-sm-2">
-                      <!-- <div class="input-group-prepend">
-                        <div class="input-group-text">@</div>
-                      </div> -->
-                      <input type="text" class="form-control" id="inlineFormInputGroupUsername2" placeholder="No of Results">
+                    <div class="form-group">
+                        <label>File upload</label>
+                        <input type="file" name="img[]" class="file-upload-default">
+                        <div style="margin-right: 10px;"></div>
+                        <div class="input-group col-xs-12">
+                          <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                          <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                          </span>
+                        </div>
                     </div>
-                    <!-- <div class="form-check mx-sm-2">
-                      <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" checked>
-                        Remember me
-                      </label>
-                    </div> -->
-                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+
                   </form>
                 </div>
               </div>
@@ -689,7 +686,7 @@
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Results table</h4>
+                  <h4 class="card-title">Recent Documents</h4>
                   <p class="card-description">
                     <!-- Add class <code>.table-bordered</code> -->
                   </p>
@@ -721,7 +718,7 @@
                             1
                           </td>
                           <td>
-                            Herman Beck
+                            <a href="/analyse">Biotech 101</a>
                           </td>
                           <td>
                             <div class="progress">
