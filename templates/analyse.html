@@ -120,24 +120,25 @@
             <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Upload Document</h4>
+                  <h4 class="card-title">Selection</h4>
                   <p class="card-description">
                     <!-- Use the <code>.form-inline</code> class to display a series of labels, form controls, and buttons on a single horizontal row -->
                   </p>
                   <form class="form-inline">
-
-                    <div class="form-group">
-                        <label>File upload</label>
-                        <input type="file" name="img[]" class="file-upload-default">
-                        <div style="margin-right: 10px;"></div>
-                        <div class="input-group col-xs-12">
-                          <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                          <span class="input-group-append">
-                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                          </span>
-                        </div>
-                    </div>
-
+                    <div class="template-demo">
+                    <button type="button" class="btn btn-primary btn-icon-text">
+                      <i class="mdi mdi-file-check btn-icon-prepend"></i>
+                      WordCloud
+                    </button>
+                    <button type="button" class="btn btn-dark btn-icon-text">
+                      Summarization
+                      <i class="mdi mdi-file-check btn-icon-append"></i>                          
+                    </button>
+                    <button type="button" class="btn btn-success btn-icon-text">
+                      <i class="mdi mdi-alert btn-icon-prepend"></i>                                                    
+                      QnA
+                    </button>
+                  </div>
                   </form>
                 </div>
               </div>
