@@ -102,18 +102,25 @@ def found():
 @app.route('/uploader',methods=['GET', 'POST']) ##called when new file is uploaded in UI
 def uploader():
    if request.method == 'POST':
+       
+      #pdf = request.files['file']
         ok = request.files['file']
         ok.save(secure_filename(ok.filename))
-        new = open("doc.txt","wb")
         fp = str(ok.filename)
         fp=fp.replace(' ','_')
         fp = re.sub('[()]', '', fp)
-        #file = 'paper.pdf'
-        # Parse data from file
-        file_data = parser.from_file(fp)
-        # Get files text content
-        text = file_data['content']
-        new.write(text.encode('utf-8'))
+        
+        raw_xml = parser.from_file(fp, xmlContent=True)
+        body = raw_xml['content'].split('<body>')[1].split('</body>')[0]
+        body_without_tag = body.replace("<p>", "").replace("</p>", "").replace("<div>", "").replace("</div>","").replace("<p />","")
+        text_pages = body_without_tag.split("""<div class="page">""")[1:]
+        num_pages = len(text_pages)
+        new = open("doc.txt","w")
+        #print(num_pages)
+        if num_pages==int(raw_xml['metadata']['xmpTPg:NPages']) : #check if it worked correctly
+         for i in range(num_pages):
+           new.write(text_pages[i])
+           new.write(" \n page_ended \n ")  
         return render_template('dashboard.html')
 @app.route("/dashboard")
 def dashboard():
