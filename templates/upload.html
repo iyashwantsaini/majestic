@@ -107,18 +107,18 @@
                   <p class="card-description">
                     <!-- Use the <code>.form-inline</code> class to display a series of labels, form controls, and buttons on a single horizontal row -->
                   </p>
-                  <form class="form-inline">
+                  <form class="form-inline"form action="{{ url_for('uploader') }}" method="post" enctype="multipart/form-data">
 
                     <div class="form-group">
                         <label>File upload</label>
-                        <input type="file" name="img[]" class="file-upload-default">
+                        <input type="file" type="file" name= "file"  class="file-upload-default">
                         <div style="margin-right: 10px;"></div>
                         <div class="input-group col-xs-12">
-                          <input type="text" class="form-control file-upload-info" disabled placeholder="Browse PDF">
+                          <input type="text" type="file" name= "file" class="form-control file-upload-info" disabled placeholder="Browse PDF">
                           <span class="input-group-append">
                             <button class="file-upload-browse btn btn-primary" type="button">Browse</button>
                           </span>
-                          <button type="button" class="btn btn-success btn-icon-text" style="margin-left:10px;">                                                 
+                          <button  type="submit" class="btn btn-success btn-icon-text" style="margin-left:10px;">                                                 
                             Upload
                           </button>
                         </div>
