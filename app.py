@@ -1,10 +1,13 @@
 import os
+import re
 import arxiv
 import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
 import pandas as pd
 import math
+from werkzeug.utils import secure_filename
+from tika import parser
 
 titles_list = []
 links_list = []
@@ -46,6 +49,7 @@ def found():
     print('hello')
     branch=branch.lower()
     if branch=='arxiv':
+        print('hi')
         result = arxiv.query(query=keyword,max_results=noofresults)
         data = pd.DataFrame(columns = ["Title",'Published Date','Download Link'])
         for i in range(len(result)):
@@ -95,7 +99,22 @@ def found():
             df = pd.DataFrame.from_dict(d)
             finaldf = df[:noofresults] #dataframe
         
-
+@app.route('/uploader',methods=['GET', 'POST']) ##called when new file is uploaded in UI
+def uploader():
+   if request.method == 'POST':
+        ok = request.files['file']
+        ok.save(secure_filename(ok.filename))
+        new = open("doc.txt","wb")
+        fp = str(ok.filename)
+        fp=fp.replace(' ','_')
+        fp = re.sub('[()]', '', fp)
+        #file = 'paper.pdf'
+        # Parse data from file
+        file_data = parser.from_file(fp)
+        # Get files text content
+        text = file_data['content']
+        new.write(text.encode('utf-8'))
+        return render_template('dashboard.html')
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
