@@ -46,7 +46,6 @@ def found():
     print('hello')
     branch=branch.lower()
     if branch=='arxiv':
-        print('hi')
         result = arxiv.query(query=keyword,max_results=noofresults)
         data = pd.DataFrame(columns = ["Title",'Published Date','Download Link'])
         for i in range(len(result)):
