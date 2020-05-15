@@ -1,5 +1,7 @@
 import os
 import re
+import sys
+import base64
 import arxiv
 import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
@@ -8,6 +10,13 @@ import pandas as pd
 import math
 from werkzeug.utils import secure_filename
 from tika import parser
+
+# mongo
+from flask import session
+import pymongo
+from pymongo import MongoClient
+import bcrypt
+# mongo
 
 titles_list = []
 links_list = []
@@ -19,23 +28,67 @@ author_list=[]
 
 app = Flask(__name__)
 
+# mongo
+app.config['MONGO_DBNAME'] = 'phd'
+app.config['MONGO_URI'] = 'mongodb://phd:phd123@cluster0-shard-00-00-1c9pi.mongodb.net:27017,cluster0-shard-00-01-1c9pi.mongodb.net:27017,cluster0-shard-00-02-1c9pi.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
+mongo=MongoClient('mongodb://phd:pdh123@cluster0-shard-00-00-1c9pi.mongodb.net:27017,cluster0-shard-00-01-1c9pi.mongodb.net:27017,cluster0-shard-00-02-1c9pi.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority')
+# mongo
+
 @app.route("/")
 def index():
-        
-        return render_template("login.html")
+    # if 'username' in session:
+    #     return render_template("dashboard.html",username=session["username"])
+    # else:
+        return render_template('login.html')
 
-@app.route('/selection',methods=['POST'])
-def selection():
-    
+@app.route('/login',methods=['POST'])
+def login():
+
     username = request.form['username']
     password= request.form['password']
+
+    # username=base64.b64encode(username.encode('utf-8',errors = 'strict'))
+    # password=base64.b64encode(password.encode('utf-8',errors = 'strict'))
+
+    users = mongo.db.users
+    login_user = users.find_one({'name' : request.form['username']})
+
+    if login_user:
+        if bcrypt.hashpw(password.encode('utf-8'), login_user['password']) == login_user['password']:
+            session['username'] = request.form['username']
+            # return redirect(url_for('index'))
+            return render_template("dashboard.html")
     
-    if username=='thapar' and password=='thapar':
-        return render_template('dashboard.html')
-    else :
-        return render_template('login.html', warning='Please enter correct username and password')
-    
-    
+    return render_template('login.html', warning='Please enter correct username and password')
+
+    # if username=='thapar' and password=='thapar':
+    #     return render_template('dashboard.html')
+    # else :
+    #     return render_template('login.html', warning='Please enter correct username and password')
+
+# @app.route('/register', methods=['POST', 'GET'])
+# def register():
+#     if request.method == 'POST':
+#         users = mongo.db.users
+#         existing_user = users.find_one({'name' : request.form['username']})
+
+#         if existing_user is None:
+#             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
+#             users.insert({'name' : request.form['username'], 'password' : hashpass})
+#             session['username'] = request.form['username']
+#             return redirect(url_for('index'))
+        
+#         return 'That username already exists!'
+
+#     return render_template('register.html')
+
+@app.route("/logout")
+def logout():
+    session.pop('username',None)
+    del session['username']
+    return redirect(url_for('index'))
+    # return render_template("login.html")
+
 @app.route("/searchengine")
 def searchengine():
     return render_template("searchengine.html")
@@ -126,9 +179,9 @@ def uploader():
 def dashboard():
     return render_template("dashboard.html")
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
+# @app.route("/login")
+# def login():
+#     return render_template("login.html")
 
 @app.route("/upload")
 def upload():
@@ -155,4 +208,5 @@ def profile():
     return render_template("profile.html")
 
 if __name__ == "__main__":
+    app.secret_key = 'phd123'
     app.run(debug=True,use_reloader=True)
