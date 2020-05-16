@@ -113,21 +113,31 @@
                   <p class="card-description">
                     <!-- Use the <code>.form-inline</code> class to display a series of labels, form controls, and buttons on a single horizontal row -->
                   </p>
-                  <form class="form-inline">
-                          <button class="form-control mb-2 mr-sm-2 btn btn-lg btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-right: 10px;">Select Engine</button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">ARXIV</a>
-                            <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">IEEE</a>
-                          </div>
+                  
+                  <form class="form-inline" method="post" action="{{ url_for('found') }}">
+                  
+                    <label class="sr-only" for="inlineFormInputName2">IEEE or Arxiv</label>
+                    <input type="text" name="engine" class="form-control"  enctype="multipart/form-data" placeholder="IEEE or Arxiv">    
+                        <!-- </div> -->
+                        <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button"> -->
+                      <!-- </div> -->
                       
                     <label class="sr-only" for="inlineFormInputName2">Topic</label>
-                    <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="Topic">
+                    <input type="text" name="keyword" class="form-control"  enctype="multipart/form-data" placeholder="Topic">
 
                     <label class="sr-only" for="inlineFormInputGroupUsername2">Results</label>
                     <div class="input-group mb-2 mr-sm-2">
-                      <input type="text" class="form-control" id="inlineFormInputGroupUsername2" placeholder="No of Results">
+                      <!-- <div class="input-group-prepend">
+                        <div class="input-group-text">@</div>
+                      </div> -->
+                      <input type="text" name="number" class="form-control"  enctype="multipart/form-data" placeholder="No of Results">
                     </div>
+                    <!-- <div class="form-check mx-sm-2">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" checked>
+                        Remember me
+                      </label>
+                    </div> -->
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
                   </form>
                 </div>
@@ -192,6 +202,7 @@
             
           </div>
         </div>
+        
         <!-- content-wrapper ends -->
         <!-- partial:../static/partials/_footer.html -->
         <footer class="footer">
