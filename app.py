@@ -159,7 +159,7 @@ def uploader():
       #pdf = request.files['file']
         ok = request.files['file']
         ok.save(secure_filename(ok.filename))
-        fp = str(ok.filename)
+        fp = ok.filename
         fp=fp.replace(' ','_')
         fp = re.sub('[()]', '', fp)
         
