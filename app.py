@@ -201,14 +201,14 @@ def found():
             d = {"Title": titles_list, "Link": links_list, "Publication Date": date_list,  "No of Citations" : citation_list }
             df = pd.DataFrame.from_dict(d)
             finaldf = df[:noofresults] #dataframe
-        
+            return render_template('searchengine.html',tables=[finaldf.to_html(render_links=True,classes=['table table-bordered'])]);
 @app.route('/uploader',methods=['GET', 'POST']) ##called when new file is uploaded in UI
 @login_required
 def uploader():
    if request.method == 'POST':
         ok = request.files['file']
         ok.save(secure_filename(ok.filename))
-        fp = str(ok.filename)
+        fp = ok.filename
         fp=fp.replace(' ','_')
         fp = re.sub('[()]', '', fp)
         
