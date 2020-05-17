@@ -60,7 +60,10 @@ class User(UserMixin, db.Model):
 
 class AdminModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated
+        if current_user.username=='thapar123':
+            return True
+        # return current_user.is_authenticated
+        return False
     
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('dashboard'))
@@ -82,7 +85,7 @@ def load_user(user_id):
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
-    remember = BooleanField('Remember Me')
+    # remember = BooleanField('Remember Me')
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
@@ -91,8 +94,6 @@ class RegisterForm(FlaskForm):
 
 @app.route("/")
 def index():
-    # if current_user:
-    #     return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -103,7 +104,8 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
+                login_user(user)
+                # login_user(user, remember=form.remember.data)
                 return redirect(url_for('dashboard'))
 
         return render_template('login.html', form=form, warning='Incorrect Username or Password')
@@ -129,7 +131,10 @@ def signup():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html",username=current_user.username)
+    # if current_user.is_authenticated:
+    return render_template("dashboard.html",current_user=current_user)
+    # else:
+        # redirect(url_for('login'))
 
 @app.route("/logout")
 @login_required
@@ -140,7 +145,7 @@ def logout():
 @app.route("/searchengine")
 @login_required
 def searchengine():
-    return render_template("searchengine.html")
+    return render_template("searchengine.html",current_user=current_user)
 
 @app.route("/found",methods=['POST','GET'])
 @login_required
@@ -201,7 +206,7 @@ def found():
             d = {"Title": titles_list, "Link": links_list, "Publication Date": date_list,  "No of Citations" : citation_list }
             df = pd.DataFrame.from_dict(d)
             finaldf = df[:noofresults] #dataframe
-            return render_template('searchengine.html',tables=[finaldf.to_html(render_links=True,classes=['table table-bordered'])]);
+            return render_template('searchengine.html',tables=[finaldf.to_html(render_links=True,classes=['table table-bordered'])],current_user=current_user);
 
 @app.route('/uploader',methods=['GET', 'POST']) ##called when new file is uploaded in UI
 @login_required
@@ -224,37 +229,37 @@ def uploader():
          for i in range(num_pages):
            new.write(text_pages[i])
            new.write(" \n page_ended \n ")  
-        return render_template('dashboard.html')
+        return render_template('dashboard.html',current_user=current_user)
 
 @app.route("/upload")
 @login_required
 def upload():
-    return render_template("upload.html")
+    return render_template("upload.html",current_user=current_user)
 
 @app.route("/analyse")
 @login_required
 def analyse():
-    return render_template("analyse.html")
+    return render_template("analyse.html",current_user=current_user)
 
 @app.route("/wordcloud")
 @login_required
 def wordcloud():
-    return render_template("wordcloud.html")
+    return render_template("wordcloud.html",current_user=current_user)
 
 @app.route("/summarization")
 @login_required
 def summarization():
-    return render_template("summarization.html")
+    return render_template("summarization.html",current_user=current_user)
 
 @app.route("/qna")
 @login_required
 def qna():
-    return render_template("qna.html")
+    return render_template("qna.html",current_user=current_user)
 
 @app.route("/profile")
 @login_required
 def profile():
-    return render_template("profile.html")
+    return render_template("profile.html",current_user=current_user)
 
 if __name__ == "__main__":
     db.create_all()
