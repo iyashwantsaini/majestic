@@ -215,6 +215,7 @@ def uploader():
         ok = request.files['file']
         ok.save(secure_filename(ok.filename))
         fp = ok.filename
+        pa=str(fp)+'.txt'
         fp=fp.replace(' ','_')
         fp = re.sub('[()]', '', fp)
         
@@ -223,7 +224,7 @@ def uploader():
         body_without_tag = body.replace("<p>", "").replace("</p>", "").replace("<div>", "").replace("</div>","").replace("<p />","")
         text_pages = body_without_tag.split("""<div class="page">""")[1:]
         num_pages = len(text_pages)
-        new = open("doc.txt","w")
+        new = open(pa,"w")
         #print(num_pages)
         if num_pages==int(raw_xml['metadata']['xmpTPg:NPages']) : #check if it worked correctly
          for i in range(num_pages):
