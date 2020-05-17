@@ -1,7 +1,5 @@
 import os
 import re
-import sys
-import base64
 import arxiv
 import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
@@ -11,12 +9,17 @@ import math
 from werkzeug.utils import secure_filename
 from tika import parser
 
-# mongo
-from flask import session
-import pymongo
-from pymongo import MongoClient
-import bcrypt
-# mongo
+from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm 
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
+from flask_sqlalchemy  import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_admin import Admin, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
+# from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
+
 
 titles_list = []
 links_list = []
@@ -27,73 +30,120 @@ abstract_list=[]
 author_list=[]
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secretkey123'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+bootstrap = Bootstrap(app)
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-# mongo
-app.config['MONGO_DBNAME'] = 'phd'
-app.config['MONGO_URI'] = 'mongodb://phd:phd123@cluster0-shard-00-00-1c9pi.mongodb.net:27017,cluster0-shard-00-01-1c9pi.mongodb.net:27017,cluster0-shard-00-02-1c9pi.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
-mongo=MongoClient('mongodb://phd:pdh123@cluster0-shard-00-00-1c9pi.mongodb.net:27017,cluster0-shard-00-01-1c9pi.mongodb.net:27017,cluster0-shard-00-02-1c9pi.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority')
-# mongo
+# role_users = db.Table('roles_users',
+#     db.Column('user_id',db.Integer, db.ForeignKey('user.id')),
+#     db.Column('role_id',db.Integer, db.ForeignKey('role.id'))
+# )
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15), unique=True)
+    email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(80))
+    # active = db.Column(db.Boolean)
+    # confirmed_at = db.Column(db.DateTime)
+    # roles = db.relationship('Role', secondary= roles_users, backref=db.backref('users', lazy='dynamic'))
+
+# class Role(RoleMixin, db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(40))
+#     description = db.Column(db.String(255))
+
+class AdminModelView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+    
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('dashboard'))
+
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+admin =Admin(app, index_view=MyAdminIndexView())
+admin.add_view(AdminModelView(User, db.session))
+
+# user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+# security = Security(app, user_datastore)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+    remember = BooleanField('Remember Me')
+
+class RegisterForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
 
 @app.route("/")
 def index():
-    # if 'username' in session:
-    #     return render_template("dashboard.html",username=session["username"])
-    # else:
-        return render_template('login.html')
+    # if current_user:
+    #     return redirect(url_for('dashboard'))
+    return redirect(url_for('login'))
 
-@app.route('/login',methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
 
-    username = request.form['username']
-    password= request.form['password']
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('dashboard'))
 
-    # username=base64.b64encode(username.encode('utf-8',errors = 'strict'))
-    # password=base64.b64encode(password.encode('utf-8',errors = 'strict'))
+        return render_template('login.html', form=form, warning='Incorrect Username or Password')
+        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
 
-    users = mongo.db.users
-    login_user = users.find_one({'name' : request.form['username']})
+    return render_template('login.html', form=form)
 
-    if login_user:
-        if bcrypt.hashpw(password.encode('utf-8'), login_user['password']) == login_user['password']:
-            session['username'] = request.form['username']
-            # return redirect(url_for('index'))
-            return render_template("dashboard.html")
-    
-    return render_template('login.html', warning='Please enter correct username and password')
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = RegisterForm()
 
-    # if username=='thapar' and password=='thapar':
-    #     return render_template('dashboard.html')
-    # else :
-    #     return render_template('login.html', warning='Please enter correct username and password')
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
 
-# @app.route('/register', methods=['POST', 'GET'])
-# def register():
-#     if request.method == 'POST':
-#         users = mongo.db.users
-#         existing_user = users.find_one({'name' : request.form['username']})
+        return redirect(url_for('login'))
+        #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
 
-#         if existing_user is None:
-#             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
-#             users.insert({'name' : request.form['username'], 'password' : hashpass})
-#             session['username'] = request.form['username']
-#             return redirect(url_for('index'))
-        
-#         return 'That username already exists!'
+    return render_template('register.html', form=form)
 
-#     return render_template('register.html')
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    return render_template("dashboard.html",username=current_user.username)
 
 @app.route("/logout")
+@login_required
 def logout():
-    session.pop('username',None)
-    del session['username']
+    logout_user()
     return redirect(url_for('index'))
-    # return render_template("login.html")
 
 @app.route("/searchengine")
+@login_required
 def searchengine():
     return render_template("searchengine.html")
 
 @app.route("/found",methods=['POST','GET'])
+@login_required
 def found():
     branch = request.form['engine'] #ieee or arxiv
     keyword = request.form['keyword']
@@ -153,10 +203,9 @@ def found():
             finaldf = df[:noofresults] #dataframe
         
 @app.route('/uploader',methods=['GET', 'POST']) ##called when new file is uploaded in UI
+@login_required
 def uploader():
    if request.method == 'POST':
-       
-      #pdf = request.files['file']
         ok = request.files['file']
         ok.save(secure_filename(ok.filename))
         fp = str(ok.filename)
@@ -175,38 +224,37 @@ def uploader():
            new.write(text_pages[i])
            new.write(" \n page_ended \n ")  
         return render_template('dashboard.html')
-@app.route("/dashboard")
-def dashboard():
-    return render_template("dashboard.html")
-
-# @app.route("/login")
-# def login():
-#     return render_template("login.html")
 
 @app.route("/upload")
+@login_required
 def upload():
     return render_template("upload.html")
 
 @app.route("/analyse")
+@login_required
 def analyse():
     return render_template("analyse.html")
 
 @app.route("/wordcloud")
+@login_required
 def wordcloud():
     return render_template("wordcloud.html")
 
 @app.route("/summarization")
+@login_required
 def summarization():
     return render_template("summarization.html")
 
 @app.route("/qna")
+@login_required
 def qna():
     return render_template("qna.html")
 
 @app.route("/profile")
+@login_required
 def profile():
     return render_template("profile.html")
 
 if __name__ == "__main__":
-    app.secret_key = 'phd123'
+    db.create_all()
     app.run(debug=True,use_reloader=True)
