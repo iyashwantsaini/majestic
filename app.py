@@ -5,6 +5,7 @@ import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
 import pandas as pd
+from flask_ngrok import run_with_ngrok
 import math
 from werkzeug.utils import secure_filename
 from tika import parser
@@ -30,6 +31,7 @@ abstract_list=[]
 author_list=[]
 
 app = Flask(__name__)
+run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'secretkey123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
@@ -215,10 +217,9 @@ def uploader():
         ok = request.files['file']
         ok.save(secure_filename(ok.filename))
         fp = ok.filename
-        pa=str(fp)+'.txt'
         fp=fp.replace(' ','_')
         fp = re.sub('[()]', '', fp)
-        
+        pa=str(fp).replace('.pdf','')+'.txt'
         raw_xml = parser.from_file(fp, xmlContent=True)
         body = raw_xml['content'].split('<body>')[1].split('</body>')[0]
         body_without_tag = body.replace("<p>", "").replace("</p>", "").replace("<div>", "").replace("</div>","").replace("<p />","")
