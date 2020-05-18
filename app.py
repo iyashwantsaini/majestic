@@ -217,6 +217,7 @@ def uploader():
         ok = request.files['file']
         ok.save(secure_filename(ok.filename))
         fp = ok.filename
+        name=current_user.username
         fp=fp.replace(' ','_')
         fp = re.sub('[()]', '', fp)
         pa=str(fp).replace('.pdf','')+'.txt'
@@ -225,7 +226,7 @@ def uploader():
         body_without_tag = body.replace("<p>", "").replace("</p>", "").replace("<div>", "").replace("</div>","").replace("<p />","")
         text_pages = body_without_tag.split("""<div class="page">""")[1:]
         num_pages = len(text_pages)
-        new = open("PDF/"+pa,"w")
+        new = open("PDF/"+str(name)+'_'+pa,"w")
         #print(num_pages)
         if num_pages==int(raw_xml['metadata']['xmpTPg:NPages']) : #check if it worked correctly
          for i in range(num_pages):
@@ -233,7 +234,7 @@ def uploader():
            new.write(" \n page_ended \n ") 
         os.remove(str(fp))
         filename = secure_filename(ok.filename)
-        ok.save(os.path.join("PDF/", filename))
+        ok.save(os.path.join("PDF/",str(name)+'_'+filename))
         return render_template('dashboard.html',current_user=current_user)
 
 @app.route("/upload")
