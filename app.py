@@ -286,9 +286,23 @@ def analyse(pdf_id):
 @login_required
 def wordcloud(pdf_id):
     pdf = PDFdata.query.filter_by(id=pdf_id).one()
-    fname=pdf.filename
-    uname=current_user.username
-    return render_template("wordcloud.html",current_user=current_user, pdf=pdf)
+    fname=str(pdf.filename)
+    fname1=fname.replace('.pdf','')
+    uname=str(current_user.username)
+    img='static/pdf/'+uname+'_'+fname
+    file = open(img,"r",errors='ignore') 
+    text=file.read()
+    wordcloud = WordCloud(width = 550, height = 500, 
+        				background_color ='blue',  
+        				min_font_size = 10).generate(text) 
+        
+    # plot the WordCloud image					 
+    plt.figure(figsize = (8, 8), facecolor = None) 
+    plt.imshow(wordcloud) 
+    plt.axis("off") 
+    plt.tight_layout(pad = 0) 
+    plt.savefig('static/images/'+uname+'_'+fname1+'.png')
+    return render_template("wordcloud.html",name = 'new_plot', url ='../static/images/'+uname+'_'+fname1+'.png', pdf=pdf, current_user=current_user)
 
 @app.route("/summarization/<int:pdf_id>")
 @login_required
