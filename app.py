@@ -5,10 +5,11 @@ import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
 import pandas as pd
-from flask_ngrok import run_with_ngrok
+# from flask_ngrok import run_with_ngrok
 import math
 from werkzeug.utils import secure_filename
 from tika import parser
+# from urllib import *
 
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
@@ -19,6 +20,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
+from datetime import datetime
+from io import BytesIO
+import shutil
 # from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
 
 
@@ -31,9 +35,9 @@ abstract_list=[]
 author_list=[]
 
 app = Flask(__name__)
-run_with_ngrok(app)
+# run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'secretkey123'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
@@ -51,9 +55,18 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
+    pdfs = db.relationship('PDFdata', backref='owner')
     # active = db.Column(db.Boolean)
     # confirmed_at = db.Column(db.DateTime)
     # roles = db.relationship('Role', secondary= roles_users, backref=db.backref('users', lazy='dynamic'))
+
+class PDFdata(db.Model):
+    id =db.Column(db.Integer, primary_key=True)
+    filename=db.Column(db.String(300))
+    data=db.Column(db.LargeBinary)
+    text=db.Column(db.Text)
+    date_uploaded = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 # class Role(RoleMixin, db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -76,6 +89,7 @@ class MyAdminIndexView(AdminIndexView):
 
 admin =Admin(app, index_view=MyAdminIndexView())
 admin.add_view(AdminModelView(User, db.session))
+admin.add_view(AdminModelView(PDFdata, db.session))
 
 # user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 # security = Security(app, user_datastore)
@@ -133,8 +147,13 @@ def signup():
 @app.route("/dashboard")
 @login_required
 def dashboard():
+    # user = User.query.filter_by(username=form.username.data).first()
+    # FileContents.query.filter_by(id=1).first()
+    pdfs = PDFdata.query.filter_by(user_id=current_user.id).order_by(PDFdata.date_uploaded.desc()).all()
+    # return send_file(BytesIO(file_data.data),attachment_filename='flask.pdf',as_attachment=True)
     # if current_user.is_authenticated:
-    return render_template("dashboard.html",current_user=current_user)
+
+    return render_template("dashboard.html",current_user=current_user,pdfs=pdfs)
     # else:
         # redirect(url_for('login'))
 
@@ -210,6 +229,12 @@ def found():
             finaldf = df[:noofresults] #dataframe
             return render_template('searchengine.html',tables=[finaldf.to_html(render_links=True,classes=['table table-bordered'])],current_user=current_user);
 
+@app.route("/upload")
+@login_required
+def upload():
+    pdfs = PDFdata.query.filter_by(user_id=current_user.id).order_by(PDFdata.date_uploaded.desc()).all()
+    return render_template("upload.html",current_user=current_user,pdfs=pdfs)
+
 @app.route('/uploader',methods=['GET', 'POST']) ##called when new file is uploaded in UI
 @login_required
 def uploader():
@@ -220,12 +245,21 @@ def uploader():
         name=current_user.username
         fp=fp.replace(' ','_')
         fp = re.sub('[()]', '', fp)
-        pa=str(fp).replace('.pdf','')+'.txt'
         raw_xml = parser.from_file(fp, xmlContent=True)
         body = raw_xml['content'].split('<body>')[1].split('</body>')[0]
         body_without_tag = body.replace("<p>", "").replace("</p>", "").replace("<div>", "").replace("</div>","").replace("<p />","")
         text_pages = body_without_tag.split("""<div class="page">""")[1:]
         num_pages = len(text_pages)
+
+        #savedb
+        # binarydata=ok.read()
+        # pdf = PDFdata(filename=fp, data=binarydata, text=body_without_tag, date_uploaded=datetime.now(), user_id=current_user.id)
+        pdf = PDFdata(filename=fp, date_uploaded=datetime.now(), user_id=current_user.id)
+        db.session.add(pdf)
+        db.session.commit()
+        #savedb
+
+        pa=str(fp).replace('.pdf','')+'.txt'
         new = open("static/pdf/"+str(name)+'_'+pa,"w",encoding="utf-8")
         #print(num_pages)
         if num_pages==int(raw_xml['metadata']['xmpTPg:NPages']) : #check if it worked correctly
@@ -240,39 +274,39 @@ def uploader():
         ren_des="static/pdf/"+current_user.username+'_'+str(fp)
         os.rename(ren_src,ren_des)
         
-        
-        return render_template('dashboard.html',current_user=current_user)
+        return render_template('upload.html',current_user=current_user)
 
-@app.route("/upload")
+@app.route("/analyse/<int:pdf_id>")
 @login_required
-def upload():
-    return render_template("upload.html",current_user=current_user)
+def analyse(pdf_id):
+    pdf = PDFdata.query.filter_by(id=pdf_id).one()
+    return render_template("analyse.html",current_user=current_user, pdf=pdf)
 
-@app.route("/analyse")
+@app.route("/wordcloud/<int:pdf_id>")
 @login_required
-def analyse():
-    return render_template("analyse.html",current_user=current_user)
+def wordcloud(pdf_id):
+    pdf = PDFdata.query.filter_by(id=pdf_id).one()
+    fname=pdf.filename
+    uname=current_user.username
+    return render_template("wordcloud.html",current_user=current_user, pdf=pdf)
 
-@app.route("/wordcloud")
+@app.route("/summarization/<int:pdf_id>")
 @login_required
-def wordcloud():
-    return render_template("wordcloud.html",current_user=current_user)
+def summarization(pdf_id):
+    pdf = PDFdata.query.filter_by(id=pdf_id).one()
+    fname=pdf.filename
+    uname=current_user.username
+    return render_template("summarization.html",current_user=current_user, pdf=pdf)
 
-@app.route("/summarization")
+@app.route("/qna/<int:pdf_id>")
 @login_required
-def summarization():
-    return render_template("summarization.html",current_user=current_user)
-
-@app.route("/qna")
-@login_required
-def qna():
-    return render_template("qna.html",current_user=current_user)
-
-@app.route("/profile")
-@login_required
-def profile():
-    return render_template("profile.html",current_user=current_user)
+def qna(pdf_id):
+    pdf = PDFdata.query.filter_by(id=pdf_id).one()
+    fname=pdf.filename
+    uname=current_user.username
+    return render_template("qna.html",current_user=current_user, pdf=pdf)
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(debug=True,use_reloader=True)
+    # app.run(debug=True,use_reloader=True)
+    app.run(debug=True)

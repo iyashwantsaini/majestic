@@ -1,0 +1,491 @@
+
+Project Proposal 
+
+Google Summer of Code 2020 
+
+FOSSology 
+
+Idea : FOSSology Server Job Dashboard 
+
+ 
+
+Yashwant 
+
+Email: yashsn2127@gmail.com 
+
+Phone: +91-8397950022 
+
+Resume: [Link] 
+
+Index 
+
+1. Introduction 
+
+2. Synopsis 
+
+3. Benefits to Community 
+
+4. Project Goals 
+
+5. Timeline 
+
+6. Deliverables 
+
+7. References 
+
+Introduction 
+
+Personal Information 
+
+Full Name:  Yashwant Saini 
+
+Institute:  Thapar Institute of Engineering and Technology , 2nd Year B.Tech 
+
+Student 
+
+       Computer Science and Engineering 
+
+Email:  yashsn2127@gmail.com 
+
+  yyashwant_be18@thapar.edu 
+
+Phone: +91-8397950022 
+
+<div class="annotation"><a href="https://www.meyash.xyz/resume.pdf">https://www.meyash.xyz/resume.pdf</a>
+<div class="annotation"><a href="mailto:yashsn2127@gmail.com">mailto:yashsn2127@gmail.com</a>
+<div class="annotation"><a href="mailto:yyashwant_be18@thapar.edu">mailto:yyashwant_be18@thapar.edu</a>
+
+ 
+ page_ended 
+ 
+Github: https://github.com/meyash 
+
+Resume: https://www.meyash.xyz/resume.pdf 
+
+Linkedin: https://www.linkedin.com/in/meyash21/ 
+
+Portfolio: https://www.meyash.xyz/ 
+
+Blog: https://iq.opengenus.org/author/yashwant/ 
+
+Timezone: Indian Standard Time (GMT +0530) 
+
+Address: Hostel K, Thapar Institute of Engineering and Technology, Patiala, Punjab, 
+
+India 147001 
+
+Why GSoC with FOSSology? 
+
+I have always been interested in working with new technologies and developing 
+
+applications for various platforms. FOSSology is the premier free software system for 
+
+licence scanning and many companies rely on FOSSology on a weekly basis for 
+
+their work. Improving FOSSology will help the community and these companies in 
+
+getting their work done easily. This project is about creating an FOSSology server 
+
+job dashboard and I believe I am the perfect match for working on this project. 
+
+Synopsis 
+
+FOSSology is an open source license compliance software system and toolkit. As a 
+
+toolkit you can run license, copyright and export control scans from the command 
+
+line. As a system, a database and web ui are provided to give you a compliance 
+
+workflow. In one click you can generate an SPDX file, or a ReadMe with the 
+
+copyrights notices from your software. Many companies rely on FOSSology on a 
+
+weekly basis for their work. 
+
+Problems Faced 
+
+FOSSology has a dashboard, but that is more for the data. In fact, if FOSSology runs 
+
+as a server for multiple users. There are many jobs around. Depending on the 
+
+utilisation, there are a number of packages scanned and analysed and therefore 
+
+plenty of jobs in the queue.  
+
+Now comes the problem: FOSSology currently allows us to view our own jobs only or 
+
+jobs with access rights for the referring upload. While this is consistent in terms of 
+
+access restrictions, a normal user does not understand what is going on the 
+
+Fossology server and why their own tasks are taking time to be processed. Impatient 
+
+<div class="annotation"><a href="https://github.com/meyash">https://github.com/meyash</a>
+<div class="annotation"><a href="https://www.meyash.xyz/resume.pdf">https://www.meyash.xyz/resume.pdf</a>
+<div class="annotation"><a href="https://www.linkedin.com/in/meyash21/">https://www.linkedin.com/in/meyash21/</a>
+<div class="annotation"><a href="https://www.meyash.xyz/">https://www.meyash.xyz/</a>
+<div class="annotation"><a href="https://iq.opengenus.org/author/yashwant/">https://iq.opengenus.org/author/yashwant/</a>
+
+ 
+ page_ended 
+ 
+users submit jobs again and again until they see some progress. But in fact they 
+
+have worsened the Job situation.  
+
+The current job dashboard is shown below :  
+
+ 
+
+Project Goals 
+
+Tasks 
+
+The following features in addition to the tasks or scan jobs being processed must be 
+
+added to the dashboard : 
+
+● Tasks currently in queue 
+
+○ of current user and other users as well. 
+
+● Ability to see which tasks are currently being processed by the server. 
+
+● Ability to see what other users are doing. 
+
+● Better list, sort and filter capabilities than current job view 
+
+● Improvement in UI and replacement of flat tables. 
+
+○ Enhancement or replacement in the current tabular based job view  
+
+Timeline 
+
+Duration Task 
+
+March 31 Deadline for submitting Project Proposal 
+
+March 31 - 
+
+May 4 
+
+● Learn more about Fossology. 
+
+● Read documentation and learn more about how the server 
+
+handles jobs. 
+
+● Read documentation and learn more about the licence 
+
+compatibility agents work. 
+
+
+ 
+ page_ended 
+ 
+May 4 - June 
+
+1 
+
+Official Community Bonding Period 
+
+● Get Involved with the FOSSology community. 
+
+● Know more about mentors such as their timezone, preferred 
+
+medium of communication etc. 
+
+● Learn about other ongoing projects at FOSSology. 
+
+● Get acquainted with various tools used by FOSSology. 
+
+Begin Task 1 : Viewing tasks currently in queue 
+
+● Design and plan how the new dashboard will be 
+
+implemented. 
+
+● Get suggestions from mentors. 
+
+● Set up the development environment. 
+
+June 1 - 
+
+June 24 
+
+Official Coding Period Start 
+
+● Add functionality to show all tasks currently in queue. 
+
+● Test the implemented functionality 
+
+● Get reviews and fixing bugs 
+
+Begin Task 2 : Viewing tasks which are currently being 
+
+processed.  
+
+● Add functionality to view tasks which are being processed. 
+
+● Test the implemented functionality 
+
+● Get reviews and fixing bugs 
+
+June 24 - 
+
+June 29 
+
+● Time period for any unexpected delay. 
+
+Finish Tasks 1 and 2  
+
+June 29 - 
+
+July 3 
+
+Phase 1 evaluation 
+
+● Submit git repository of Code with documentation 
+
+
+ 
+ page_ended 
+ 
+July 3 - July 
+
+23 
+Begin Task 3 : Viewing what each user is doing.  
+
+● Add functionality to view what each user is doing. 
+
+● Test the implemented functionality 
+
+● Get reviews and fixing bugs 
+
+Begin Task 4 : Better list, sort and filter capabilities than 
+
+current job view.  
+
+● Improvements in list, sort and filter capabilities. 
+
+● Test the implemented functionality 
+
+● Get reviews and fixing bugs 
+
+July 23 - 
+
+July 27 
+
+● Time period for any unexpected delay. 
+
+Finish Tasks 3 and 4 
+
+July 27 - 
+
+July 31 
+
+Phase 2 evaluation 
+
+● Submit git repository of Code with documentation 
+
+July 31 - 
+
+August 24 
+
+Begin Task 5 : Improvements in UI and replacing flat tables  
+
+● Planning which UI elements will be replaced and designing 
+
+new UI elements.  
+
+● Replacing current flat tables and other UI elements with new 
+
+ones. 
+
+● Ask feedback from the mentors/users and implement 
+
+suggestions. 
+
+August 24 - 
+
+August 31 
+
+Finish Task 5 
+
+Final Submission 
+
+● Submit git repository of final code with complete 
+
+documentation. 
+
+ 
+
+
+ 
+ page_ended 
+ 
+Benefits to Community 
+
+Implementation of the job dashboard with new features will benefit the community in 
+
+many ways : 
+
+● Users will now have a good understanding of how the tasks are being handled 
+
+by the FOSSology server.  
+
+● They will know whether their or someone else’s job is currently being run by 
+
+the server.  
+
+● This will prevent users from getting impatient and submitting their jobs again 
+
+and again. 
+
+● Improvements in UI will help attract more users. 
+
+Deliverables 
+
+● Added functionality of viewing tasks currently in queue. 
+
+● Added functionality of which tasks are being processed by users. 
+
+● Added functionality of viewing what other users are doing. 
+
+● Better list, sort and filter capabilities than current job view 
+
+● Improved UI of the job dashboard. 
+
+Future Goals 
+
+● Explore the possibility of improving the job dashboard. 
+
+About Me 
+
+I am Yashwant, a 2nd year Computer Science and Engineering student at Thapar 
+
+Institute of Engineering and Technology, Patiala. I have experience in multiple 
+
+programming languages like C/C++, Python, Java, Javascript.. 
+
+I am proficient in javascript, jQuery, PHP, Node.js, SQL and like developing websites 
+
+using Node.js, React, MongoDB and Express. I know the basics of data science and 
+
+have worked with libraries like Scikit-learn, Numpy, Pandas, Seaborn, Matplotlib, 
+
+Plotly and Cufflinks. I have also explored computer vision and android development. 
+
+Experience 
+
+● Machine Learning Intern at OpenGenus (august-november 2019).  
+
+● Backend Developer at a startup named Fiks (november-december 2019). 
+
+<div class="annotation"><a href="http://opengenus.org/">http://opengenus.org/</a>
+<div class="annotation"><a href="http://fiks.in/">http://fiks.in/</a>
+
+ 
+ page_ended 
+ 
+● Web Developer at a startup called Analyticware (currently working) 
+
+I have also coded on various platforms like hackerrank, codechef, codeforces etc. 
+
+Working Environment 
+
+● Operating System : Ubuntu 18.04.4 LTS / Windows 10 Dual Boot 
+
+● OS Type : 64 bit 
+
+● GNOME : 3.28.2 
+
+● Processor : Intel® Core™ i7-8550U CPU @ 1.80GHz × 8  
+
+● Graphics : Intel® UHD Graphics 620 , Nvidia GEFORCE 940MX 
+
+● Ram : 8GB 
+
+● Hard Disk : 1TB 
+
+Commitments 
+
+How much time will you be able to contribute to this project? 
+
+I will be working 6-8 hours per day for the entire duration of the project. 
+
+Will you treat Google Summer of Code as a full-time employment? 
+
+Yes 
+
+Do you have any experience using source control e.g. Git? 
+
+Yes, I have been using GitHub for a long time now. I use it for both my institute as 
+
+well as personal projects. 
+
+Any previous open-source projects you have contributed to? 
+
+This is my first time in GSoC. I have already learned a-lot about the open source culture 
+
+and how they work in a professional way. I would be very excited to learn more. It would 
+
+be a great opportunity for me to expand my skills while still contributing to open-source. 
+
+This can be the starting point for me for seriously getting into and truly appreciating the 
+
+concept of Open-Source. Most of my projects are on my Git-Hub profile.  
+
+Do you plan to have any other commitments during GSoC that may 
+
+affect your work? 
+
+I do not have any commitments that would affect my work in any way. I have not applied 
+
+for any other internships/ part-time / full-time jobs. I have 24/7 internet connectivity, as 
+
+<div class="annotation"><a href="http://analyticware.in/">http://analyticware.in/</a>
+
+ 
+ page_ended 
+ 
+well as access to personal laptop. I have no trips / vacations planned irrespective of GSoC 
+
+or not. 
+
+How do we contact you for questions, comments, suggestions, etc.? 
+
+I am perfectly fine with Email, Skype, IRC or any other similar medium of 
+
+communication. My preferred language for communication is English. 
+
+Skype : @yashsn2127 
+
+Email : yashsn2127@gmail.com 
+
+Do you plan on contributing to our project after GSoC is over? 
+
+I would definitely like to continue my contributions even after GSoC. 
+
+References 
+
+1. FOSSOLOGY GITHUB 
+
+2. FOSSOLOGY 
+
+3. INSTALL FROM SOURCE 
+
+4. YOUTUBE - Using Fossology 
+
+5. PROPOSAL GUIDELINES 
+
+<div class="annotation"><a href="mailto:yashsn2127@gmail.com">mailto:yashsn2127@gmail.com</a>
+<div class="annotation"><a href="https://github.com/fossology/fossology">https://github.com/fossology/fossology</a>
+<div class="annotation"><a href="https://www.fossology.org/">https://www.fossology.org/</a>
+<div class="annotation"><a href="https://github.com/fossology/fossology/wiki/Install-from-Source">https://github.com/fossology/fossology/wiki/Install-from-Source</a>
+<div class="annotation"><a href="https://www.youtube.com/watch?v=NXPqLTnd-xE">https://www.youtube.com/watch?v=NXPqLTnd-xE</a>
+<div class="annotation"><a href="https://google.github.io/gsocguides/student/writing-a-proposal">https://google.github.io/gsocguides/student/writing-a-proposal</a>
+
+ 
+ page_ended 
+ 

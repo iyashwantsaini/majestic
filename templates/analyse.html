@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% if current_user.is_authenticated %}
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -55,11 +56,8 @@
               <span class="nav-profile-name">{{current_user.username}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="mdi mdi-settings text-primary"></i>
-                Settings
-              </a>
-              <a class="dropdown-item">
+             
+              <a class="dropdown-item" href="/logout">
                 <i class="mdi mdi-logout text-primary"></i>
                 Logout
               </a>
@@ -89,27 +87,30 @@
               <span class="menu-title">Search Engine</span>
             </a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link" href="/wordcloud">
+            <a class="nav-link" href="{{ url_for('wordcloud', pdf_id=pdf.id) }}">
               <i class="mdi mdi-chart-pie menu-icon"></i>
               <span class="menu-title">Wordcloud</span>
             </a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link" href="summarization">
+            <a class="nav-link" href="{{ url_for('summarization', pdf_id=pdf.id) }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Summarization</span>
             </a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link" href="qna">
+            <a class="nav-link" href="{{ url_for('qna', pdf_id=pdf.id) }}">
               <i class="mdi mdi-emoticon menu-icon"></i>
               <span class="menu-title">QnA</span>
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="/">
+            <a class="nav-link" href="/logout">
               <i class="mdi mdi-file-document-box-outline menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
@@ -120,15 +121,14 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-
             
             <div class="col-lg-8 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">{PDF Name}</h4>
+                  <h4 class="card-title">{{ pdf.filename }}</h4>
                   <p class="card-description">
-                    <!-- Add class <code>.table-bordered</code> -->
                   </p>
+
                   <!-- PDF -->
                   <style>
                     /* Only resize the element if PDF is embedded */
@@ -141,9 +141,10 @@
                   <div id="my-container"></div>
 
                   <script>
-                    PDFObject.embed("../static/pdf/radix.pdf", "#my-container");
+                    PDFObject.embed("../static/pdf/{{current_user.username}}_{{pdf.filename}}", id="#my-container");
                   </script>
                   <!-- PDF -->
+
                 </div>
               </div>
             </div>
@@ -191,4 +192,5 @@
 {% else %}
 <h1>404!</h1>
 {% endif %}
+
 </html>

@@ -1,0 +1,56 @@
+ok = request.files['file']
+        ok.save(secure_filename(ok.filename))
+        fp = ok.filename
+        name=current_user.username
+        fp=fp.replace(' ','_')
+        fp = re.sub('[()]', '', fp)
+        pa=str(fp).replace('.pdf','')+'.txt'
+        raw_xml = parser.from_file(fp, xmlContent=True)
+        body = raw_xml['content'].split('<body>')[1].split('</body>')[0]
+        body_without_tag = body.replace("<p>", "").replace("</p>", "").replace("<div>", "").replace("</div>","").replace("<p />","")
+        text_pages = body_without_tag.split("""<div class="page">""")[1:]
+        num_pages = len(text_pages)
+        new = open("static/pdf/"+str(name)+'_'+pa,"w",encoding="utf-8")
+        #print(num_pages)
+        if num_pages==int(raw_xml['metadata']['xmpTPg:NPages']) : #check if it worked correctly
+         for i in range(num_pages):
+           new.write(text_pages[i])
+           new.write(" \n page_ended \n ") 
+        no=os.getcwd()
+        plis=no+'/'+str(fp)
+        filedir = "static/pdf/"
+        shutil.move(plis,filedir)
+        ren_src="static/pdf/"+str(fp)
+        ren_des="static/pdf/"+current_user.username+'_'+str(fp)
+        os.rename(ren_src,ren_des)
+
+
+
+#     @app.route('/event/<int:id>/logo')
+#     def event_logo(id):
+#       event = Event.query.get_or_404(id)
+#       return app.response_class(event.logo, mimetype='application/octet-stream')
+#       
+#      <img src="{{ url_for('event_logo', id=event.id }}"/>
+#     [3:16 PM, 5/18/2020] Yashwant: from flask import make_response
+
+# @app.route('/docs/<id>')
+# def get_pdf(id=None):
+#     if id is not None:
+#         binary_pdf = get_binary_pdf_data_from_database(id=id)
+#         response = make_response(binary_pdf)
+#         response.headers['Content-Type'] = 'application/pdf'
+#         response.headers['Content-Disposition'] = \
+#             'inline; filename=%s.pdf' % 'yourfilename'
+#         return response
+# [3:17 PM, 5/18/2020] Yashwant: <embed src="/docs/pdfid8676etc" width="500" height="375">
+# [3:17 PM, 5/18/2020] Yashwant: <embed src="/docs/{{doc_id}}">
+# [3:17 PM, 5/18/2020] Yashwant: from flask import render_template
+
+# @app.route('/<id>')
+# def show_pdf(id=None):
+#     if id is not None:
+#         return render_template('doc.html', doc_id=id)
+# [3:18 PM, 5/18/2020] Yashwant: <img src="{{ url_for('static', filename='img.png', _external=True) }}" />
+
+    # return send_file(BytesIO(file_data.data),attachment_filename='flask.pdf',as_attachment=True)
