@@ -293,19 +293,50 @@ def wordcloud(pdf_id):
     img='static/pdf/'+uname+'_'+fname1+'.txt'
     file = open(img,"r",encoding='utf-8') 
     text=file.read()
-    wordcloud = WordCloud(width = 550, height = 500, 
-        				background_color ='pink',  
-        				min_font_size = 10).generate(text) 
+    stopwords = ['what','who','is','a','at','is','he']
+    querywords = text.split()
+    resultwords  = [word for word in querywords if word.lower() not in stopwords]
+    result = ' '.join(resultwords)
+    
         
-    # plot the WordCloud image					 
+    # plot the WordCloud image	of overall document		
+    char_mask = np.array(Image.open("heart.jpg"))    
+    image_colors = ImageColorGenerator(char_mask)
+    wordcloud = WordCloud(background_color="white", max_words=100, width=250, height=250, mask=char_mask, random_state=2).generate(result)# to recolour the image		 
     plt.figure(figsize = (8, 8), facecolor = None) 
-    plt.imshow(wordcloud) 
+    plt.imshow(wordcloud.recolor(color_func=image_colors))
     plt.axis("off") 
     plt.tight_layout(pad = 0) 
-    plt.savefig('static/images/'+uname+'_'+fname1+'.png')
-    print('ok')
-    return render_template("wordcloud.html",name = 'new_plot', url ='../static/images/'+uname+'_'+fname1+'.png', pdf=pdf, current_user=current_user)
-
+    plt.savefig('static/images/'+uname+'_'+fname1+'img1'+'.png')
+    plt.clf()
+    plt.cla()
+    plt.close()
+    
+    
+    #plot the keywords according to text rank 
+    
+    tr4w = TextRank4Keyword()
+    tr4w.analyze(result, candidate_pos = ['NOUN', 'PROPN'], window_size=4, lower=False)
+    ok=tr4w.get_keywords(8)
+    plt.bar(x=ok[0],height=ok[1], width = 0.7, color = ['grey', 'pink'] )
+    
+    #plt.figure(figsize=(250,250))
+    #plt.show()
+    plt.tight_layout(pad = 0)
+    #print(ok[0],ok[1])
+    
+# naming the x-axis 
+    plt.xlabel('IMPORTANT KEYTERMS') 
+# naming the y-axis 
+    plt.ylabel('KEYWORD SCORE') 
+     
+# plot title 
+    #plt.title('My bar chart!')   
+# function to show the plot 
+    #plt.show() 
+    plt.savefig('static/images/'+uname+'_'+fname1+'_'+'img2'+'.png')
+    
+    return render_template("wordcloud.html",name = 'new_plot', url1 ='../static/images/'+uname+'_'+fname1+'img1'+'.png',url2 ='../static/images/'+uname+'_'+fname1+'_'+'img2'+'.png', pdf=pdf, current_user=current_user)
 @app.route("/summarization/<int:pdf_id>")
 @login_required
 def summarization(pdf_id):
