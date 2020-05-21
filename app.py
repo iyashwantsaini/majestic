@@ -289,11 +289,11 @@ def wordcloud(pdf_id):
     fname=str(pdf.filename)
     fname1=fname.replace('.pdf','')
     uname=str(current_user.username)
-    img='static/pdf/'+uname+'_'+fname
-    file = open(img,"r",errors='ignore') 
+    img='static/pdf/'+uname+'_'+fname1+'.txt'
+    file = open(img,"r",encoding='utf-8') 
     text=file.read()
     wordcloud = WordCloud(width = 550, height = 500, 
-        				background_color ='blue',  
+        				background_color ='pink',  
         				min_font_size = 10).generate(text) 
         
     # plot the WordCloud image					 
@@ -302,6 +302,7 @@ def wordcloud(pdf_id):
     plt.axis("off") 
     plt.tight_layout(pad = 0) 
     plt.savefig('static/images/'+uname+'_'+fname1+'.png')
+    print('ok')
     return render_template("wordcloud.html",name = 'new_plot', url ='../static/images/'+uname+'_'+fname1+'.png', pdf=pdf, current_user=current_user)
 
 @app.route("/summarization/<int:pdf_id>")
