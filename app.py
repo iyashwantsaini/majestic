@@ -10,7 +10,7 @@ import math
 from werkzeug.utils import secure_filename
 from tika import parser
 # from urllib import *
-
+from nlppreprocess import NLP
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField
@@ -25,7 +25,7 @@ from io import BytesIO
 import shutil
 # from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
 
-
+obj = NLP()
 titles_list = []
 links_list = []
 date_list = []
@@ -264,8 +264,9 @@ def uploader():
         #print(num_pages)
         if num_pages==int(raw_xml['metadata']['xmpTPg:NPages']) : #check if it worked correctly
          for i in range(num_pages):
-           new.write(text_pages[i])
-           new.write(" \n page_ended \n ") 
+           text=obj.process(text_pages[i])
+           new.write(text)
+           new.write(" \n page_ended \n ")
         no=os.getcwd()
         plis=no+'/'+str(fp)
         filedir = "static/pdf/"
