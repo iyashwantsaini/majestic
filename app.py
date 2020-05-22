@@ -384,6 +384,7 @@ def summarization(pdf_id):
     no=len(new)
     for i in range(no-1):
         temp=new[i]
+        temp=obj.process(temp)
         summ=summarize(temp,word_count=150)
         summary_list.append(summ)
     return render_template('summarization.html',summary=summary_list, length = len(summary_list),pdf=pdf, current_user=current_user)
