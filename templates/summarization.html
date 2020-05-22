@@ -106,25 +106,32 @@
           <div class="row">
             
             
-            <div class="col-md-6 d-flex align-items-stretch">
-              <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Summary</h4>
-                      <p class="card-description">
-                        <!-- Write text in <code>&lt;p&gt;</code> tag -->
-                      </p>
-                      <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley not only five centuries,
-                      </p>
-                    </div>
-                  </div>
+            <div class="main">
+            <div class="container-fluid">
+
+                <!-- <br><br> -->
+                <!-- summary -->
+                <div class="head-text">
+                    <h2>Summarization</h2>
                 </div>
+                <br>
+
+                <!-- scrollable pages -->
+                <div class="cover-container">
+                            {%for i in range(0, length)%}
+                            <div class="cover-item">
+                                <h5>Page {{i+1}}</h5>
+                                <div class="card">
+                                {{summary[i]}}
+                                </div>
+                            </div>
+                            {%endfor%} 
+                </div>
+
+                <!-- <br><br> -->
                 
-              </div>
+            </div>
+        </div>
             </div>
             
           </div>
