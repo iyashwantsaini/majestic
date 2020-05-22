@@ -21,36 +21,26 @@
     <!-- partial:../static/partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
-        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index.html"><img src="../static/images/logo.svg" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../static/images/logo-mini.svg" alt="logo"/></a>
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand brand-logo" href="index.html"><img src="../static/images/logo.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../static/images/logo-mini.svg"
+              alt="logo" /></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
-        </div>  
+        </div>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <ul class="navbar-nav mr-lg-4 w-100">
-          <li class="nav-item nav-search d-none d-lg-block w-100">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="search">
-                  <i class="mdi mdi-magnify"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-            </div>
-          </li>
-        </ul>
+        
         <ul class="navbar-nav navbar-nav-right">
-          
+
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="../static/images/faces/face5.jpg" alt="profile"/>
+              <img src="../static/images/faces/face5.jpg" alt="profile" />
               <span class="nav-profile-name">{{ current_user.username }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              
+
               <a class="dropdown-item" href="/logout">
                 <i class="mdi mdi-logout text-primary"></i>
                 Logout
@@ -58,7 +48,8 @@
             </div>
           </li>
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+          data-toggle="offcanvas">
           <span class="mdi mdi-menu"></span>
         </button>
       </div>
@@ -74,7 +65,7 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          
+
           <li class="nav-item">
             <a class="nav-link" href="/searchengine">
               <i class="mdi mdi-view-headline menu-icon"></i>
@@ -114,76 +105,38 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-12 grid-margin stretch-card">
+
+
+            <div class="col-lg-5 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Inline forms</h4>
-                  <p class="card-description">
-                    <!-- Use the <code>.form-inline</code> class to display a series of labels, form controls, and buttons on a single horizontal row -->
-                  </p>
-                  <form class="form-inline">
-                    <label class="sr-only" for="inlineFormInputName2">Name</label>
-                    <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="Jane Doe">
-                  
-                    <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label>
-                    <div class="input-group mb-2 mr-sm-2">
-                      <div class="input-group-prepend">
-                        <div class="input-group-text">@</div>
-                      </div>
-                      <input type="text" class="form-control" id="inlineFormInputGroupUsername2" placeholder="Username">
-                    </div>
-                    <div class="form-check mx-sm-2">
-                      <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" checked>
-                        Remember me
-                      </label>
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
-                  </form>
+                  <h4 class="card-title">Word Cloud</h4>
+                  <br>
+                  <img src={{ url1 }} alt="Chart" width="400px" height="350px">
                 </div>
               </div>
             </div>
-            
-            <div class="main">
-            <div class="container-fluid">
 
-                <!-- <br><br> -->
-                <!-- cloud! -->
-                <div class="head-text">
-                    <h2>Word Cloud</h2>
+            <div class="col-lg-5 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Key Words</h4>
+                  <br>
+                  <img src={{ url2 }} alt="Chart" width="400px" height="350px">
                 </div>
-                <br>
-                <div class="card">
-                <img src={{ url1 }} alt="Chart" height="500" width="550">
-                </div>    
-                <!-- <br><br> -->
-
+              </div>
             </div>
-        </div>
-            <div class="main">
-            <div class="container-fluid">
 
-                <!-- <br><br> -->
-                <!-- cloud! -->
-                <div class="head-text">
-                    <h2> bar graph</h2>
-                </div>
-                <br>
-                <div class="card">
-                <img src={{ url2 }} alt="Chart" height="500" width="550">
-                </div>    
-                <!-- <br><br> -->
 
-            </div>
-        </div>
-         
+          </div>
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../static/partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2020 <a
+                href="https://www.analyticware.in/" target="_blank">AnalyticWare</a>. All rights reserved.</span>
           </div>
         </footer>
         <!-- partial -->
@@ -196,9 +149,9 @@
   <!-- plugins:js -->
   <script src="../static/vendors/base/vendor.bundle.base.js"></script>
   <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <script src="../static/vendors/chart.js/Chart.min.js"></script>
-    <!-- End plugin js for this page-->
+  <!-- Plugin js for this page-->
+  <script src="../static/vendors/chart.js/Chart.min.js"></script>
+  <!-- End plugin js for this page-->
   <!-- inject:js -->
   <script src="../static/js/off-canvas.js"></script>
   <script src="../static/js/hoverable-collapse.js"></script>

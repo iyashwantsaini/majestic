@@ -7,6 +7,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Dashboard</title>
+  <!-- socetio -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+  <link rel="stylesheet" href="../static/css/index.css">
+  <!-- socketio -->
   <!-- plugins:css -->
   <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../static/vendors/base/vendor.bundle.base.css">
@@ -21,6 +28,111 @@
 </head>
 
 <body>
+  <!-- socketio -->
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on('connect', function () {});
+      socket.on('message', function (msg) {
+        setBotResponse(msg);
+      });
+
+      $('#mymessage').on('keyup keypress', function (e) {
+        var keyCode = e.keyCode || e.which;
+        var text = $("#mymessage").val();
+
+        if (keyCode === 13) {
+          if (text == "" || $.trim(text) == '') {
+            e.preventDefault();
+            return false;
+          } else {
+            e.preventDefault();
+            setUserResponse(text);
+            // socket.on('connect', function () {
+              socket.send(text);
+            // });
+            
+            $("#mymessage").blur();
+            // socket.on('message', function (msg) {
+            //   setBotResponse(msg);
+            // });
+
+            return false;
+          }
+        }
+      });
+
+      $('#sendbutton').on('click', function (e) {
+        var text = $("#mymessage").val();
+        if (text == "" || $.trim(text) == '') {
+          e.preventDefault();
+          return false;
+        } else {
+          e.preventDefault();
+          setUserResponse(text);
+          // socket.on('connect', function () {
+              socket.send(text);
+            // });
+          $("#mymessage").blur();
+          // socket.on('message', function (msg) {
+          //   setBotResponse(msg);
+          // });
+          return false;
+        }
+      });
+    });
+  </script>
+  <div class="container">
+    <div class="row">
+      <div id="Smallchat">
+        <div class="Layout Layout-open Layout-expand Layout-right"
+          style="background-color: #3F51B5;color: rgb(255, 255, 255);opacity: 5;border-radius: 10px;">
+          <div class="Messenger_messenger">
+            <div class="Messenger_header" style=" color: rgb(255, 255, 255);">
+              <h4 class="Messenger_prompt">How can we help you?</h4>
+              <span class="chat_close_icon" style=" color:white;margin-right: 5px;float:right;margin-top: 5px;">
+                <i class="material-icons" aria-hidden="true">close</i>
+              </span>
+            </div>
+
+            <div class="Messenger_content">
+              <div class="Messages chats" id="chats">
+                <div class="clearfix"></div>
+              </div>
+              <div class="Input Input-blank">
+                <form>
+                <input type="text" id="mymessage" class="Input_field" placeholder="Send a message..."
+                  style="height: 20px;"></input>
+                <button id="sendbutton" class="Input_button Input_button-send" type="submit">
+                  <div class="Icon" style="width: 18px; height: 18px;">
+                    <svg width="57px" height="54px" viewBox="1496 193 57 54" version="1.1"
+                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                      style="width: 18px; height: 18px;">
+                      <g id="Group-9-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                        transform="translate(1523.000000, 220.000000) rotate(-270.000000) translate(-1523.000000, -220.000000) translate(1499.000000, 193.000000)">
+                        <path
+                          d="M5.42994667,44.5306122 L16.5955554,44.5306122 L21.049938,20.423658 C21.6518463,17.1661523 26.3121212,17.1441362 26.9447801,20.3958097 L31.6405465,44.5306122 L42.5313185,44.5306122 L23.9806326,7.0871633 L5.42994667,44.5306122 Z M22.0420732,48.0757124 C21.779222,49.4982538 20.5386331,50.5306122 19.0920112,50.5306122 L1.59009899,50.5306122 C-1.20169244,50.5306122 -2.87079654,47.7697069 -1.64625638,45.2980459 L20.8461928,-0.101616237 C22.1967178,-2.8275701 25.7710778,-2.81438868 27.1150723,-0.101616237 L49.6075215,45.2980459 C50.8414042,47.7885641 49.1422456,50.5306122 46.3613062,50.5306122 L29.1679835,50.5306122 C27.7320366,50.5306122 26.4974445,49.5130766 26.2232033,48.1035608 L24.0760553,37.0678766 L22.0420732,48.0757124 Z"
+                          id="sendicon" fill="#96AAB4" fill-rule="nonzero"></path>
+                      </g>
+                    </svg>
+                  </div>
+                </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--===============CHAT ON BUTTON STRART===============-->
+        <div class="chat_on">
+          <span class="material-icons">
+            face
+          </span> </div>
+        <!--===============CHAT ON BUTTON END===============-->
+      </div>
+    </div>
+  </div>
+  <!-- socketio -->
+
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -35,32 +147,22 @@
         </div>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <ul class="navbar-nav mr-lg-4 w-100">
-          <li class="nav-item nav-search d-none d-lg-block w-100">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="search">
-                  <i class="mdi mdi-magnify"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="Search now" aria-label="search"
-                aria-describedby="search">
-            </div>
-          </li>
-        </ul>
+        
         <ul class="navbar-nav navbar-nav-right">
 
-          <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+          <!-- <li class="nav-item nav-profile dropdown"> -->
+          <li class="nav-item nav-profile">
+            <!-- <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown"> -->
+            <a class="nav-link" href="#">
               <img src="../static/images/faces/face5.jpg" alt="profile" />
               <span class="nav-profile-name">{{ current_user.username }}</span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+            <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="/logout">
                 <i class="mdi mdi-logout text-primary"></i>
                   Logout
               </a>
-            </div>
+            </div> -->
           </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
@@ -197,7 +299,10 @@
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
+  <!-- socketio -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="../static/js/index.js"></script>
+  <!-- socketio -->
   <!-- plugins:js -->
   <script src="../static/vendors/base/vendor.bundle.base.js"></script>
   <!-- endinject -->

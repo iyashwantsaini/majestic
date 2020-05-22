@@ -4,18 +4,20 @@ import arxiv
 import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
-from keywords import TextRank4Keyword
-from wordcloud import WordCloud,ImageColorGenerator
-import numpy as np
-from PIL import Image
-import matplotlib.pyplot as plt
 import pandas as pd
 # from flask_ngrok import run_with_ngrok
 import math
 from werkzeug.utils import secure_filename
 from tika import parser
 # from urllib import *
+
+from keywords import TextRank4Keyword
 from nlppreprocess import NLP
+import numpy as np
+from matplotlib import pyplot as plt
+from PIL import Image
+from wordcloud import WordCloud,ImageColorGenerator
+
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField
@@ -26,11 +28,31 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from datetime import datetime
+
 from io import BytesIO
 import shutil
 # from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
 
-obj = NLP()
+#socketio
+# from flask_socketio import SocketIO, emit,send
+# from flask_ngrok import run_with_ngrok
+# import random 
+# import time 
+# import numpy
+
+# import nltk
+# from nltk.stem.lancaster import LancasterStemmer
+# stemmer = LancasterStemmer()
+
+# import numpy
+# import tflearn
+# import tensorflow
+# import random
+# import json
+# import pickle
+# import os
+#socketio
+
 titles_list = []
 links_list = []
 date_list = []
@@ -49,6 +71,12 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+#socketio
+# socketio = SocketIO( app )
+# welcome_greetings = ["Hey","Howdy","Greetings and Salutations!","Hello","Hi there!","Hey I'm doing great .How are you?","Nice to meet you!","Long time no see","Look who it is!"]
+# greetings=["hi","hey","how are you"]
+#socketio
 
 # role_users = db.Table('roles_users',
 #     db.Column('user_id',db.Integer, db.ForeignKey('user.id')),
@@ -269,9 +297,8 @@ def uploader():
         #print(num_pages)
         if num_pages==int(raw_xml['metadata']['xmpTPg:NPages']) : #check if it worked correctly
          for i in range(num_pages):
-           text=obj.process(text_pages[i])
-           new.write(text)
-           new.write(" \n page_ended \n ")
+           new.write(text_pages[i])
+           new.write(" \n page_ended \n ") 
         no=os.getcwd()
         plis=no+'/'+str(fp)
         filedir = "static/pdf/"
@@ -280,7 +307,7 @@ def uploader():
         ren_des="static/pdf/"+current_user.username+'_'+str(fp)
         os.rename(ren_src,ren_des)
         
-        return render_template('upload.html',current_user=current_user)
+        return redirect(url_for('upload'))
 
 @app.route("/analyse/<int:pdf_id>")
 @login_required
@@ -303,9 +330,8 @@ def wordcloud(pdf_id):
     resultwords  = [word for word in querywords if word.lower() not in stopwords]
     result = ' '.join(resultwords)
     
-        
     # plot the WordCloud image	of overall document		
-    char_mask = np.array(Image.open("heart.jpg"))    
+    char_mask = np.array(Image.open("heart.jpg"))
     image_colors = ImageColorGenerator(char_mask)
     wordcloud = WordCloud(background_color="white", max_words=100, width=250, height=250, mask=char_mask, random_state=2).generate(result)# to recolour the image		 
     plt.figure(figsize = (8, 8), facecolor = None) 
@@ -316,7 +342,6 @@ def wordcloud(pdf_id):
     plt.clf()
     plt.cla()
     plt.close()
-    
     
     #plot the keywords according to text rank 
     
@@ -342,6 +367,7 @@ def wordcloud(pdf_id):
     plt.savefig('static/images/'+uname+'_'+fname1+'_'+'img2'+'.png')
     
     return render_template("wordcloud.html",name = 'new_plot', url1 ='../static/images/'+uname+'_'+fname1+'img1'+'.png',url2 ='../static/images/'+uname+'_'+fname1+'_'+'img2'+'.png', pdf=pdf, current_user=current_user)
+
 @app.route("/summarization/<int:pdf_id>")
 @login_required
 def summarization(pdf_id):
@@ -358,7 +384,115 @@ def qna(pdf_id):
     uname=current_user.username
     return render_template("qna.html",current_user=current_user, pdf=pdf)
 
+#socketio
+# @app.route( '/' )
+# def hello():
+#   return render_template( 'index.html' )
+
+# def bag_of_words(s, words):
+#     bag = [0 for _ in range(len(words))]
+
+#     s_words = nltk.word_tokenize(s)
+#     s_words = [stemmer.stem(word.lower()) for word in s_words]
+
+#     for se in s_words:
+#         for i, w in enumerate(words):
+#             if w == se:
+#                 bag[i] = 1
+            
+#     return numpy.array(bag)
+
+# @socketio.on('message')
+# def handleMessage(msg):
+#     msg =msg.lower()
+    
+
+#     with open("intents.json") as file:
+#         data = json.load(file)
+
+#     try:
+#         with open("data.pickle", "rb") as f:
+#             words, labels, training, output = pickle.load(f)
+#     except:
+#         words = []
+#         labels = []
+#         docs_x = []
+#         docs_y = []
+    
+#         for intent in data["intents"]:
+#             for pattern in intent["patterns"]:
+#                 wrds = nltk.word_tokenize(pattern)
+#                 words.extend(wrds)
+#                 docs_x.append(wrds)
+#                 docs_y.append(intent["tag"])
+    
+#             if intent["tag"] not in labels:
+#                 labels.append(intent["tag"])
+    
+#         words = [stemmer.stem(w.lower()) for w in words if w != "?"]
+#         words = sorted(list(set(words)))
+    
+#         labels = sorted(labels)
+    
+#         training = []
+#         output = []
+    
+#         out_empty = [0 for _ in range(len(labels))]
+    
+#         for x, doc in enumerate(docs_x):
+#             bag = []
+    
+#             wrds = [stemmer.stem(w.lower()) for w in doc]
+    
+#             for w in words:
+#                 if w in wrds:
+#                     bag.append(1)
+#                 else:
+#                     bag.append(0)
+    
+#             output_row = out_empty[:]
+#             output_row[labels.index(docs_y[x])] = 1
+    
+#             training.append(bag)
+#             output.append(output_row)
+    
+    
+#         training = numpy.array(training)
+#         output = numpy.array(output)
+    
+#         with open("data.pickle", "wb") as f:
+#             pickle.dump((words, labels, training, output), f)
+
+#     tensorflow.reset_default_graph()
+    
+#     net = tflearn.input_data(shape=[None, len(training[0])])
+#     net = tflearn.fully_connected(net, 8)
+#     net = tflearn.fully_connected(net, 8)
+#     net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
+#     net = tflearn.regression(net)
+    
+#     model = tflearn.DNN(net)
+    
+#     MODEL_NAME='model.tflearn'
+#     if os.path.exists(MODEL_NAME + ".meta"):
+#         model.load(MODEL_NAME)
+#     else:
+#         model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
+#         model.save(MODEL_NAME)
+        
+#     results = model.predict([bag_of_words(msg, words)])
+#     results_index = numpy.argmax(results)
+#     tag = labels[results_index]
+
+#     for tg in data["intents"]:
+#             if tg['tag'] == tag:
+#                 responses = tg['responses']
+
+#     send(random.choice(responses))
+#socketio
+
 if __name__ == "__main__":
     db.create_all()
     # app.run(debug=True,use_reloader=True)
     app.run(debug=True)
+    # socketio.run( app, debug = True )
