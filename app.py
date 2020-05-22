@@ -5,6 +5,7 @@ import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
 import pandas as pd
+from PyDictionary import PyDictionary
 # from flask_ngrok import run_with_ngrok
 import math
 from werkzeug.utils import secure_filename
@@ -33,7 +34,7 @@ import shutil
 # from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
 
 #socketio
-# from flask_socketio import SocketIO, emit,send
+from flask_socketio import SocketIO, emit,send
 # from flask_ngrok import run_with_ngrok
 # import random 
 # import time 
@@ -398,6 +399,24 @@ def qna(pdf_id):
     uname=current_user.username
     return render_template("qna.html",current_user=current_user, pdf=pdf)
 
+@socketio.on('message')
+def handleMessage(msg):
+      msg =msg.lower()
+      dictionary=PyDictionary()
+      ok=dictionary.meaning(msg)
+      ok1=list(dictionary.meaning(msg))
+      l=['Noun','Verb','Adjective']
+
+      if ok1 in l:
+          ele=ok1[0]
+          if ele =='Noun':
+              val=ok['Noun'][0]
+          elif ele=='Adjective':
+              val=ok['Adjective'][0]
+          elif ele=='Verb':
+              val=ok['Verb'][0]
+      
+      send(val)
 #socketio
 # @app.route( '/' )
 # def hello():
@@ -509,4 +528,4 @@ if __name__ == "__main__":
     db.create_all()
     # app.run(debug=True,use_reloader=True)
     app.run(debug=True)
-    # socketio.run( app, debug = True )
+    socketio.run( app, debug = True )
