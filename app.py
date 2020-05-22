@@ -341,7 +341,7 @@ def wordcloud(pdf_id):
     plt.savefig('static/images/'+uname+'_'+fname1+'img1'+'.png')
     plt.clf()
     plt.cla()
-    plt.close()
+    
     
     #plot the keywords according to text rank 
     
@@ -365,7 +365,7 @@ def wordcloud(pdf_id):
 # function to show the plot 
     #plt.show() 
     plt.savefig('static/images/'+uname+'_'+fname1+'_'+'img2'+'.png')
-    
+    plt.close()
     return render_template("wordcloud.html",name = 'new_plot', url1 ='../static/images/'+uname+'_'+fname1+'img1'+'.png',url2 ='../static/images/'+uname+'_'+fname1+'_'+'img2'+'.png', pdf=pdf, current_user=current_user)
 
 @app.route("/summarization/<int:pdf_id>")
