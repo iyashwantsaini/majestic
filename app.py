@@ -5,6 +5,10 @@ import pandas as pd
 from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
 from keywords import TextRank4Keyword
+from wordcloud import WordCloud,ImageColorGenerator
+import numpy as np
+from PIL import Image
+import matplotlib.pyplot as plt
 import pandas as pd
 # from flask_ngrok import run_with_ngrok
 import math
