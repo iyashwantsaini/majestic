@@ -10,14 +10,13 @@ import math
 from werkzeug.utils import secure_filename
 from tika import parser
 # from urllib import *
-
+from gensim.summarization.summarizer import summarize
 from keywords import TextRank4Keyword
 from nlppreprocess import NLP
 import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
 from wordcloud import WordCloud,ImageColorGenerator
-
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField
@@ -60,7 +59,7 @@ doi_list=[]
 citation_list=[]
 abstract_list=[]
 author_list=[]
-
+obj = NLP()
 app = Flask(__name__)
 # run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'secretkey123'
@@ -329,7 +328,7 @@ def wordcloud(pdf_id):
     querywords = text.split()
     resultwords  = [word for word in querywords if word.lower() not in stopwords]
     result = ' '.join(resultwords)
-    
+    result=obj.process(result)
     # plot the WordCloud image	of overall document		
     char_mask = np.array(Image.open("heart.jpg"))
     image_colors = ImageColorGenerator(char_mask)
@@ -372,9 +371,23 @@ def wordcloud(pdf_id):
 @login_required
 def summarization(pdf_id):
     pdf = PDFdata.query.filter_by(id=pdf_id).one()
-    fname=pdf.filename
-    uname=current_user.username
-    return render_template("summarization.html",current_user=current_user, pdf=pdf)
+    fname=str(pdf.filename)
+    fname1=fname.replace('.pdf','')
+    uname=str(current_user.username)
+    img='static/pdf/'+uname+'_'+fname1+'.txt'
+    file = open(img,"r",encoding='utf-8') 
+    text=file.read()
+    #print(text)
+    new=text.split('page_ended')
+    #new=obj.process(new)
+    summary_list=[]
+    no=len(new)
+    for i in range(no-1):
+        temp=new[i]
+        summ=summarize(temp,word_count=150)
+        summary_list.append(summ)
+    return render_template('summarization.html',summary=summary_list, length = len(summary_list),pdf=pdf, current_user=current_user)
+
 
 @app.route("/qna/<int:pdf_id>")
 @login_required
