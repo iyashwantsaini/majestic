@@ -56,7 +56,7 @@ import os'''
 titles_list = []
 links_list = []
 date_list = []
-doi_list=[]
+abstract_list=[]
 citation_list=[]
 abstract_list=[]
 author_list=[]
@@ -251,13 +251,15 @@ def found():
                 links_list.append('https://ieeexplore.ieee.org'+record["documentLink"])
                 date_list.append(record["publicationDate"])
                 citation_list.append(record["citationCount"])
+                abstract_list.append(record["abstract"])
                 #author_list.append(record["authors"])
                 '''if record["doi"] == '' or None :
                     doi_list.append("none")
                 else:
                     doi_list.append(record["doi"])'''
         
-            d = {"Title": titles_list, "Link": links_list, "Publication Date": date_list,  "No of Citations" : citation_list }
+            d = {"Title": titles_list, "Abstract" : abstract_list , "Link": links_list, "Publication Date": date_list,  "No of Citations" : citation_list  }
+
             df = pd.DataFrame.from_dict(d)
             finaldf = df[:noofresults] #dataframe
             return render_template('searchengine.html',tables=[finaldf.to_html(render_links=True,classes=['table table-bordered'])],current_user=current_user);
