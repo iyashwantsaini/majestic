@@ -393,9 +393,10 @@ def summarization(pdf_id):
     return render_template('summarization.html',summary=summary_list, length = len(summary_list),pdf=pdf, current_user=current_user)
 
 
-@app.route("/qna/<int:pdf_id>")
+@app.route("/qna/<int:pdf_id>",methods=['GET', 'POST'])
 @login_required
 def qna(pdf_id):
+    
     ques= request.form["ques"]
     pdf = PDFdata.query.filter_by(id=pdf_id).one()
     fname=str(pdf.filename)
