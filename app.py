@@ -10,6 +10,7 @@ from PyDictionary import PyDictionary
 import math
 from werkzeug.utils import secure_filename
 from tika import parser
+from transformers import pipeline
 # from urllib import *
 from gensim.summarization.summarizer import summarize
 from keywords import TextRank4Keyword
@@ -61,6 +62,7 @@ citation_list=[]
 abstract_list=[]
 author_list=[]
 obj = NLP()
+nlp = pipeline('question-answering')
 app = Flask(__name__)
 # run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'secretkey123'
@@ -394,10 +396,19 @@ def summarization(pdf_id):
 @app.route("/qna/<int:pdf_id>")
 @login_required
 def qna(pdf_id):
+    ques= request.form["ques"]
     pdf = PDFdata.query.filter_by(id=pdf_id).one()
-    fname=pdf.filename
-    uname=current_user.username
-    return render_template("qna.html",current_user=current_user, pdf=pdf)
+    fname=str(pdf.filename)
+    fname1=fname.replace('.pdf','')
+    uname=str(current_user.username)
+    img='static/pdf/'+uname+'_'+fname1+'.txt'
+    file = open(img,"r",encoding='utf-8') 
+    text=file.read()
+    ans=nlp({
+    'question': ques,
+    'context': text})
+    new=ans['answer']
+    return render_template("qna.html",current_user=current_user, pdf=pdf,answer=new)
 
 @socketio.on('message')
 def handleMessage(msg):
