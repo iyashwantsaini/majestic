@@ -411,31 +411,30 @@ def qna(pdf_id):
         pdf = PDFdata.query.filter_by(id=pdf_id).one()
         return render_template("qna.html",current_user=current_user, pdf=pdf)
 
-# @socketio.on('message')
-# def handleMessage(msg):
-#       msg =msg.lower()
-#       print(msg)
-#       dictionary=PyDictionary()
-#       ok=dictionary.meaning(msg)
-#       ok1=list(dictionary.meaning(msg))
-#       l=['Noun','Verb','Adjective']
-
-#       if ok1 in l:
-#           ele=ok1[0]
-#           if ele =='Noun':
-#               val=ok['Noun'][0]
-#           elif ele=='Adjective':
-#               val=ok['Adjective'][0]
-#           elif ele=='Verb':
-#               val=ok['Verb'][0]      
-#       send(val)
+@socketio.on('message')
+def handleMessage(msg):
+    msg =msg.lower()
+    print('hi')
+    dictionary=PyDictionary()
+    ok=dictionary.meaning(msg)
+    ok1=list(dictionary.meaning(msg))
+    l=['Noun','Verb','Adjective']
+    if ok1[0] or ok[1] or ok[2] in l:
+          ele=ok1[0]
+          if (ele =='Noun'):
+              val=ok['Noun'][0]
+          elif (ele=='Adjective'):
+              val=ok['Adjective'][0]
+          elif (ele=='Verb'):
+              val=ok['Verb'][0]
+    send(val)
 
 #socketio
 # @app.route( '/' )
 # def hello():
 #   return render_template( 'index.html' )
 
-def bag_of_words(s, words):
+'''def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
 
     s_words = nltk.word_tokenize(s)
@@ -534,7 +533,7 @@ def handleMessage(msg):
             if tg['tag'] == tag:
                 responses = tg['responses']
 
-    send(random.choice(responses))
+    send(random.choice(responses))'''
 #socketio
 
 if __name__ == "__main__":
