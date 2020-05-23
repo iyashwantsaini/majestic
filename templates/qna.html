@@ -75,7 +75,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('qna', pdf_id=pdf.id) }}">
+            <a class="nav-link" href="{{ url_for('qna_render', pdf_id=pdf.id) }}">
               <i class="mdi mdi-emoticon menu-icon"></i>
               <span class="menu-title">QnA</span>
             </a>
@@ -100,13 +100,14 @@
                   <p class="card-description">
                   </p>
                   
-                  <form class="form-inline" action="{{ url_for('qna' , pdf_id=pdf.id ) }}" method="post">
+                  <form class="form-inline" action="{{ url_for('qna', pdf_id=pdf.id) }}" method="post">
                     <div class="input-group mb-2 mr-sm-2">
                       <input type="text" name="keyword" id="ques" name="ques" class="form-control" enctype="multipart/form-data"
                         placeholder="Write your Question Here">
                     </div>
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
                   </form>
+                  
                   <p class="card-description">
                     Ask any <code>Question</code> you have from the <code>uploaded PDF</code>!
                   </p>
