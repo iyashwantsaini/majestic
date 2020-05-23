@@ -100,10 +100,11 @@
                   <p class="card-description">
                   </p>
                   
-                  <form class="form-inline" action="{{ url_for('qna', pdf_id=pdf.id) }}" method="post">
-                    <div class="input-group mb-2 mr-sm-2">
-                      <input type="text" name="keyword" id="ques" name="ques" class="form-control" enctype="multipart/form-data"
-                        placeholder="Write your Question Here">
+                  <form  action="{{ url_for('qna', pdf_id=pdf.id) }}" method="post">
+                    <div class="form-group">
+                        
+                        <input type="text" class="form-control"  name="ques" aria-describedby="queshelp"
+                            placeholder="Enter Question">
                     </div>
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
                   </form>
