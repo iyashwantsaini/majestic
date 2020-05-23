@@ -61,6 +61,7 @@ citation_list=[]
 abstract_list=[]
 author_list=[]
 obj = NLP()
+nlp = pipeline('question-answering')
 app = Flask(__name__)
 run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'secretkey123'
