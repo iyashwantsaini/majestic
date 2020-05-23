@@ -114,18 +114,11 @@
                     <!-- Use the <code>.form-inline</code> class to display a series of labels, form controls, and buttons on a single horizontal row -->
                   </p>
 
-                  <form class="form-inline" method="post" action="">
-
-                    <label class="sr-only" for="inlineFormInputGroupUsername2">Ques</label>
-                    <div class="input-group mb-2 mr-sm-2">
-                      <input type="text" name="engine" class="form-control" enctype="multipart/form-data"
-                        placeholder="Question">
-                    </div>
-
+                  <form class="form-inline" action="{{ url_for('qna') }}" method="post">
                     <label class="sr-only" for="inlineFormInputGroupUsername2">Context</label>
                     <div class="input-group mb-2 mr-sm-2">
-                      <input type="text" name="keyword" class="form-control" enctype="multipart/form-data"
-                        placeholder="Context">
+                      <input type="text" name="keyword" id="ques" name="ques" class="form-control" enctype="multipart/form-data"
+                        placeholder="Write your Question Here">
                     </div>
 
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
@@ -141,14 +134,10 @@
                   <div class="card">
                     <div class="card-body">
                       <h4 class="card-title">Answer</h4>
-                      <p class="card-description">
-                        <!-- Write text in <code>&lt;p&gt;</code> tag -->
-                      </p>
-                      <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley not only five centuries,
-                      </p>
+                      <div class="card">
+                    Answer : <br><br>
+                    {{answer}}
+                </div>
                     </div>
                   </div>
                 </div>
