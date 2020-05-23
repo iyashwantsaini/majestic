@@ -1,4 +1,9 @@
 libs to be installed
 
-pip3 install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz
-pip install flask_socketio flask_bootstrap flask_wtf wtforms flask_admin flask_ngrok email_validator flask_sqlalchemy flask_login tika arxiv pymongo PyDictionary wordcloud flask_sqlalchemy flask_admin flask_login nlppreprocess flask_wtf flask_bootstrap
+pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz
+
+pip install flask_socketio flask_bootstrap flask_wtf wtforms flask_admin flask_ngrok email_validator flask_sqlalchemy flask_login tika arxiv pymongo PyDictionary wordcloud flask_sqlalchemy flask_admin flask_login nlppreprocess flask_wtf flask_bootstrap tensorflow==1.15 tflearn transformers
+
+import nltk
+nltk.download('punkt')
+
