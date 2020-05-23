@@ -396,20 +396,22 @@ def summarization(pdf_id):
 @app.route("/qna/<int:pdf_id>",methods=['GET', 'POST'])
 @login_required
 def qna(pdf_id):
-    
-    ques= request.form["ques"]
-    pdf = PDFdata.query.filter_by(id=pdf_id).one()
-    fname=str(pdf.filename)
-    fname1=fname.replace('.pdf','')
-    uname=str(current_user.username)
-    img='static/pdf/'+uname+'_'+fname1+'.txt'
-    file = open(img,"r",encoding='utf-8') 
-    text=file.read()
-    ans=nlp({
-    'question': ques,
-    'context': text})
-    new=ans['answer']
-    return render_template("qna.html",current_user=current_user, pdf=pdf,answer=new)
+    if request.method == 'POST':
+        ques= request.form["ques"]
+        pdf = PDFdata.query.filter_by(id=pdf_id).one()
+        fname=str(pdf.filename)
+        fname1=fname.replace('.pdf','')
+        uname=str(current_user.username)
+        img='static/pdf/'+uname+'_'+fname1+'.txt'
+        file = open(img,"r",encoding='utf-8') 
+        text=file.read()
+        ans=nlp({
+        'question': ques,
+        'context': text})
+        new=ans['answer']
+        return render_template("qna.html",current_user=current_user, pdf=pdf,answer=new)
+    else:
+        return render_template("qna.html",current_user=current_user, pdf=pdf)
 
 @socketio.on('message')
 def handleMessage(msg):
