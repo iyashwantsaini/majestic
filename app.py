@@ -6,14 +6,13 @@ from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
 import pandas as pd
 from PyDictionary import PyDictionary
-# from flask_ngrok import run_with_ngrok
+from flask_ngrok import run_with_ngrok
 import math
 from werkzeug.utils import secure_filename
 from tika import parser
-from transformers import pipeline
-# from urllib import *
 from gensim.summarization.summarizer import summarize
 from keywords import TextRank4Keyword
+from transformers import pipeline
 from nlppreprocess import NLP
 import numpy as np
 from matplotlib import pyplot as plt
@@ -37,21 +36,21 @@ import shutil
 #socketio
 from flask_socketio import SocketIO, emit,send
 # from flask_ngrok import run_with_ngrok
-# import random 
-# import time 
-# import numpy
+import random 
+import time 
+import numpy
 
-# import nltk
-# from nltk.stem.lancaster import LancasterStemmer
-# stemmer = LancasterStemmer()
+import nltk
+from nltk.stem.lancaster import LancasterStemmer
+stemmer = LancasterStemmer()
 
-# import numpy
-# import tflearn
-# import tensorflow
-# import random
-# import json
-# import pickle
-# import os
+import numpy
+import tflearn
+import tensorflow
+import random
+import json
+import pickle
+import os
 #socketio
 
 titles_list = []
@@ -62,9 +61,8 @@ citation_list=[]
 abstract_list=[]
 author_list=[]
 obj = NLP()
-nlp = pipeline('question-answering')
 app = Flask(__name__)
-# run_with_ngrok(app)
+run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'secretkey123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
@@ -75,9 +73,9 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 #socketio
-# socketio = SocketIO( app )
-# welcome_greetings = ["Hey","Howdy","Greetings and Salutations!","Hello","Hi there!","Hey I'm doing great .How are you?","Nice to meet you!","Long time no see","Look who it is!"]
-# greetings=["hi","hey","how are you"]
+socketio = SocketIO( app )
+welcome_greetings = ["Hey","Howdy","Greetings and Salutations!","Hello","Hi there!","Hey I'm doing great .How are you?","Nice to meet you!","Long time no see","Look who it is!"]
+greetings=["hi","hey","how are you"]
 #socketio
 
 # role_users = db.Table('roles_users',
@@ -332,10 +330,10 @@ def wordcloud(pdf_id):
     resultwords  = [word for word in querywords if word.lower() not in stopwords]
     result = ' '.join(resultwords)
     result=obj.process(result)
-    # plot the WordCloud image	of overall document		
+    # plot the WordCloud image  of overall document     
     char_mask = np.array(Image.open("heart.jpg"))
     image_colors = ImageColorGenerator(char_mask)
-    wordcloud = WordCloud(background_color="white", max_words=100, width=250, height=250, mask=char_mask, random_state=2).generate(result)# to recolour the image		 
+    wordcloud = WordCloud(background_color="white", max_words=100, width=250, height=250, mask=char_mask, random_state=2).generate(result)# to recolour the image        
     plt.figure(figsize = (8, 8), facecolor = None) 
     plt.imshow(wordcloud.recolor(color_func=image_colors))
     plt.axis("off") 
@@ -392,7 +390,6 @@ def summarization(pdf_id):
         summary_list.append(summ)
     return render_template('summarization.html',summary=summary_list, length = len(summary_list),pdf=pdf, current_user=current_user)
 
-
 @app.route("/qna/<int:pdf_id>",methods=['GET', 'POST'])
 @login_required
 def qna(pdf_id):
@@ -411,135 +408,138 @@ def qna(pdf_id):
         new=ans['answer']
         return render_template("qna.html",current_user=current_user, pdf=pdf,answer=new)
     else:
+        pdf = PDFdata.query.filter_by(id=pdf_id).one()
         return render_template("qna.html",current_user=current_user, pdf=pdf)
 
-@socketio.on('message')
-def handleMessage(msg):
-      msg =msg.lower()
-      dictionary=PyDictionary()
-      ok=dictionary.meaning(msg)
-      ok1=list(dictionary.meaning(msg))
-      l=['Noun','Verb','Adjective']
+# @socketio.on('message')
+# def handleMessage(msg):
+#       msg =msg.lower()
+#       print(msg)
+#       dictionary=PyDictionary()
+#       ok=dictionary.meaning(msg)
+#       ok1=list(dictionary.meaning(msg))
+#       l=['Noun','Verb','Adjective']
 
-      if ok1 in l:
-          ele=ok1[0]
-          if ele =='Noun':
-              val=ok['Noun'][0]
-          elif ele=='Adjective':
-              val=ok['Adjective'][0]
-          elif ele=='Verb':
-              val=ok['Verb'][0]
-      
-      send(val)
+#       if ok1 in l:
+#           ele=ok1[0]
+#           if ele =='Noun':
+#               val=ok['Noun'][0]
+#           elif ele=='Adjective':
+#               val=ok['Adjective'][0]
+#           elif ele=='Verb':
+#               val=ok['Verb'][0]      
+#       send(val)
+
 #socketio
 # @app.route( '/' )
 # def hello():
 #   return render_template( 'index.html' )
 
-# def bag_of_words(s, words):
-#     bag = [0 for _ in range(len(words))]
+def bag_of_words(s, words):
+    bag = [0 for _ in range(len(words))]
 
-#     s_words = nltk.word_tokenize(s)
-#     s_words = [stemmer.stem(word.lower()) for word in s_words]
+    s_words = nltk.word_tokenize(s)
+    s_words = [stemmer.stem(word.lower()) for word in s_words]
 
-#     for se in s_words:
-#         for i, w in enumerate(words):
-#             if w == se:
-#                 bag[i] = 1
+    for se in s_words:
+        for i, w in enumerate(words):
+            if w == se:
+                bag[i] = 1
             
-#     return numpy.array(bag)
+    return numpy.array(bag)
 
-# @socketio.on('message')
-# def handleMessage(msg):
-#     msg =msg.lower()
+@socketio.on('message')
+def handleMessage(msg):
+    msg =msg.lower()
     
 
-#     with open("intents.json") as file:
-#         data = json.load(file)
+    with open("intents.json") as file:
+        data = json.load(file)
 
-#     try:
-#         with open("data.pickle", "rb") as f:
-#             words, labels, training, output = pickle.load(f)
-#     except:
-#         words = []
-#         labels = []
-#         docs_x = []
-#         docs_y = []
+    try:
+        with open("data.pickle", "rb") as f:
+            words, labels, training, output = pickle.load(f)
+    except:
+        words = []
+        labels = []
+        docs_x = []
+        docs_y = []
     
-#         for intent in data["intents"]:
-#             for pattern in intent["patterns"]:
-#                 wrds = nltk.word_tokenize(pattern)
-#                 words.extend(wrds)
-#                 docs_x.append(wrds)
-#                 docs_y.append(intent["tag"])
+        for intent in data["intents"]:
+            for pattern in intent["patterns"]:
+                wrds = nltk.word_tokenize(pattern)
+                words.extend(wrds)
+                docs_x.append(wrds)
+                docs_y.append(intent["tag"])
     
-#             if intent["tag"] not in labels:
-#                 labels.append(intent["tag"])
+            if intent["tag"] not in labels:
+                labels.append(intent["tag"])
     
-#         words = [stemmer.stem(w.lower()) for w in words if w != "?"]
-#         words = sorted(list(set(words)))
+        words = [stemmer.stem(w.lower()) for w in words if w != "?"]
+        words = sorted(list(set(words)))
     
-#         labels = sorted(labels)
+        labels = sorted(labels)
     
-#         training = []
-#         output = []
+        training = []
+        output = []
     
-#         out_empty = [0 for _ in range(len(labels))]
+        out_empty = [0 for _ in range(len(labels))]
     
-#         for x, doc in enumerate(docs_x):
-#             bag = []
+        for x, doc in enumerate(docs_x):
+            bag = []
     
-#             wrds = [stemmer.stem(w.lower()) for w in doc]
+            wrds = [stemmer.stem(w.lower()) for w in doc]
     
-#             for w in words:
-#                 if w in wrds:
-#                     bag.append(1)
-#                 else:
-#                     bag.append(0)
+            for w in words:
+                if w in wrds:
+                    bag.append(1)
+                else:
+                    bag.append(0)
     
-#             output_row = out_empty[:]
-#             output_row[labels.index(docs_y[x])] = 1
+            output_row = out_empty[:]
+            output_row[labels.index(docs_y[x])] = 1
     
-#             training.append(bag)
-#             output.append(output_row)
+            training.append(bag)
+            output.append(output_row)
     
     
-#         training = numpy.array(training)
-#         output = numpy.array(output)
+        training = numpy.array(training)
+        output = numpy.array(output)
     
-#         with open("data.pickle", "wb") as f:
-#             pickle.dump((words, labels, training, output), f)
+        with open("data.pickle", "wb") as f:
+            pickle.dump((words, labels, training, output), f)
 
-#     tensorflow.reset_default_graph()
+    tensorflow.reset_default_graph()
     
-#     net = tflearn.input_data(shape=[None, len(training[0])])
-#     net = tflearn.fully_connected(net, 8)
-#     net = tflearn.fully_connected(net, 8)
-#     net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
-#     net = tflearn.regression(net)
+    net = tflearn.input_data(shape=[None, len(training[0])])
+    net = tflearn.fully_connected(net, 8)
+    net = tflearn.fully_connected(net, 8)
+    net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
+    net = tflearn.regression(net)
     
-#     model = tflearn.DNN(net)
+    model = tflearn.DNN(net)
     
-#     MODEL_NAME='model.tflearn'
-#     if os.path.exists(MODEL_NAME + ".meta"):
-#         model.load(MODEL_NAME)
-#     else:
-#         model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
-#         model.save(MODEL_NAME)
+    MODEL_NAME='model.tflearn'
+    if os.path.exists(MODEL_NAME + ".meta"):
+        model.load(MODEL_NAME)
+    else:
+        model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
+        model.save(MODEL_NAME)
         
-#     results = model.predict([bag_of_words(msg, words)])
-#     results_index = numpy.argmax(results)
-#     tag = labels[results_index]
+    results = model.predict([bag_of_words(msg, words)])
+    results_index = numpy.argmax(results)
+    tag = labels[results_index]
 
-#     for tg in data["intents"]:
-#             if tg['tag'] == tag:
-#                 responses = tg['responses']
+    for tg in data["intents"]:
+            if tg['tag'] == tag:
+                responses = tg['responses']
 
-#     send(random.choice(responses))
+    send(random.choice(responses))
 #socketio
 
 if __name__ == "__main__":
     db.create_all()
     # app.run(debug=True,use_reloader=True)
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
     socketio.run( app, debug = True )

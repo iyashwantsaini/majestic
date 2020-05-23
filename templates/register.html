@@ -2,20 +2,12 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Register</title>
-  <!-- plugins:css -->
   <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="../static/vendors/base/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
   <link rel="stylesheet" href="../static/css/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="../static/images/favicon.png" />
+  <link rel="shortcut icon" href="../static/images/idea.png" />
 </head>
 
 <body>
@@ -26,14 +18,13 @@
         <div class="row w-100 mx-0">
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-              <div class="brand-logo">
-                <img src="../static/images/logo.svg" alt="logo">
+              <div>
+                <img src="../static/images/idea.svg" alt="logo" height="60px;" style="margin-bottom: 30px;">
               </div>
               <h4>New here?</h4>
               <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
               
               <form class="form-signin" method="POST" action="/signup">
-                <!-- <h2 class="form-signin-heading">Sign Up</h2> -->
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.username) }}
                 {{ wtf.form_field(form.email) }}
@@ -47,19 +38,8 @@
           </div>
         </div>
       </div>
-      <!-- content-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
-  <!-- plugins:js -->
-  <script src="../static/vendors/base/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- inject:js -->
-  <script src="../static/js/off-canvas.js"></script>
-  <script src="../static/js/hoverable-collapse.js"></script>
-  <script src="../static/js/template.js"></script>
-  <!-- endinject -->
 </body>
 
 </html>

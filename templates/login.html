@@ -2,20 +2,12 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Login</title>
-  <!-- plugins:css -->
   <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="../static/vendors/base/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
   <link rel="stylesheet" href="../static/css/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="../static/images/favicon.png" />
+  <link rel="shortcut icon" href="../static/images/idea.png" />
 </head>
 
 <body>
@@ -26,8 +18,8 @@
         <div class="row w-100 mx-0">
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-              <div class="brand-logo">
-                <img src="../static/images/logo.svg" alt="logo">
+              <div>
+                <img src="../static/images/idea.svg" alt="logo" height="60px;" style="margin-bottom: 30px;">
               </div>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
@@ -35,15 +27,13 @@
                 <div class="col-md-6 col-sm-12">
                   
                   <form class="form-signin pt-3" method="POST" action="/login">
-                    <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
                     {{ form.hidden_tag() }}
                     {{ wtf.form_field(form.username) }}
                     {{ wtf.form_field(form.password) }}
-                     <!-- wtf.form_field(form.remember)  -->
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                   </form>
                   <div class="text-center mt-4 font-weight-light">
-                    New User ? <a href="/signup" class="text-primary"> Register</a>
+                    Not Registered ? <a href="/signup" class="text-primary"> Register</a>
                   </div>
                   <br>
                   <br>
@@ -55,19 +45,8 @@
         </div>
       </div>
     </div>
-    <!-- content-wrapper ends -->
   </div>
-  <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
-  <!-- plugins:js -->
-  <script src="../static/vendors/base/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- inject:js -->
-  <script src="../static/js/off-canvas.js"></script>
-  <script src="../static/js/hoverable-collapse.js"></script>
-  <script src="../static/js/template.js"></script>
-  <!-- endinject -->
 </body>
 
 </html>

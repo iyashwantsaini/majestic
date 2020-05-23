@@ -1,1 +1,0 @@
-flask_bootstrap flask_wtf wtforms flask_admin flask_ngrok email_validator flask_sqlalchemy flask_login tika arxiv pymongo PyDictionary wordcloud flask_sqlalchemy flask_admin flask_login nlppreprocess flask_wtf flask_bootstrap shutil

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 {% if current_user.is_authenticated %}
-
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Dashboard</title>
+  <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="shortcut icon" href="../static/images/idea.png" />
   <!-- socetio -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -14,22 +15,13 @@
   <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
   <link rel="stylesheet" href="../static/css/index.css">
   <!-- socketio -->
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="../static/vendors/base/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <link rel="stylesheet" href="../static/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="../static/css/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="../static/images/favicon.png" />
 </head>
 
 <body>
+
   <!-- socketio -->
   <script type="text/javascript">
+
     $(document).ready(function () {
       var socket = io.connect('http://' + document.domain + ':' + location.port);
       socket.on('connect', function () {});
@@ -48,15 +40,8 @@
           } else {
             e.preventDefault();
             setUserResponse(text);
-            // socket.on('connect', function () {
-              socket.send(text);
-            // });
-            
+            socket.send(text);
             $("#mymessage").blur();
-            // socket.on('message', function (msg) {
-            //   setBotResponse(msg);
-            // });
-
             return false;
           }
         }
@@ -70,20 +55,15 @@
         } else {
           e.preventDefault();
           setUserResponse(text);
-          // socket.on('connect', function () {
               socket.send(text);
-            // });
           $("#mymessage").blur();
-          // socket.on('message', function (msg) {
-          //   setBotResponse(msg);
-          // });
           return false;
         }
       });
     });
+
   </script>
-  <div class="container">
-    <div class="row">
+
       <div id="Smallchat">
         <div class="Layout Layout-open Layout-expand Layout-right"
           style="background-color: #3F51B5;color: rgb(255, 255, 255);opacity: 5;border-radius: 10px;">
@@ -122,47 +102,35 @@
             </div>
           </div>
         </div>
-        <!--===============CHAT ON BUTTON STRART===============-->
+        <!--===============CHAT ON BUTTON START===============-->
         <div class="chat_on">
           <span class="material-icons">
             face
-          </span> </div>
+          </span> 
+        </div>
         <!--===============CHAT ON BUTTON END===============-->
       </div>
-    </div>
-  </div>
-  <!-- socketio -->
+  
+  <!-- body -->
 
   <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-          <a class="navbar-brand brand-logo" href="index.html"><img src="../static/images/logo.svg" alt="logo" /></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../static/images/logo-mini.svg"
-              alt="logo" /></a>
+          <a href="/dashboard" style="text-decoration: none;color:black;margin-bottom: 0px;padding-bottom: 0px;"><img src="../static/images/idea.svg" alt="logo" style="height: 35px;" /></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
         </div>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        
+        DashBoard
         <ul class="navbar-nav navbar-nav-right">
-
-          <!-- <li class="nav-item nav-profile dropdown"> -->
           <li class="nav-item nav-profile">
-            <!-- <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown"> -->
             <a class="nav-link" href="#">
-              <img src="../static/images/faces/face5.jpg" alt="profile" />
+              <img src="../static/images/faces/person.svg" alt="profile" />
               <span class="nav-profile-name">{{ current_user.username }}</span>
             </a>
-            <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item" href="/logout">
-                <i class="mdi mdi-logout text-primary"></i>
-                  Logout
-              </a>
-            </div> -->
           </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
@@ -171,9 +139,7 @@
         </button>
       </div>
     </nav>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -207,7 +173,6 @@
           </li>
         </ul>
       </nav>
-      <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
 
@@ -289,39 +254,24 @@
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2020 <a
                 href="https://www.analyticware.in/" target="_blank">AnalyticWare</a>. All rights reserved.</span>
-
           </div>
         </footer>
-        <!-- partial -->
       </div>
-      <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
+
+  
+  <script src="../static/vendors/base/vendor.bundle.base.js"></script>
+  <script src="../static/js/off-canvas.js"></script>
+  <script src="../static/js/hoverable-collapse.js"></script>
+  <script src="../static/js/template.js"></script>
+  <script src="../static/js/dashboard.js"></script>
+
   <!-- socketio -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <script src="../static/js/index.js"></script>
   <!-- socketio -->
-  <!-- plugins:js -->
-  <script src="../static/vendors/base/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page-->
-  <script src="../static/vendors/chart.js/Chart.min.js"></script>
-  <script src="../static/vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="../static/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <!-- End plugin js for this page-->
-  <!-- inject:js -->
-  <script src="../static/js/off-canvas.js"></script>
-  <script src="../static/js/hoverable-collapse.js"></script>
-  <script src="../static/js/template.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="../static/js/dashboard.js"></script>
-  <script src="../static/js/data-table.js"></script>
-  <script src="../static/js/jquery.dataTables.js"></script>
-  <script src="../static/js/dataTables.bootstrap4.js"></script>
-  <!-- End custom js for this page-->
+
 </body>
 {% else %}
 <h1>404!</h1>

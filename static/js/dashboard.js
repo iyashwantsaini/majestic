@@ -231,17 +231,17 @@
       document.getElementById('total-sales-chart-legend').innerHTML = totalSalesChart.generateLegend();
     }
 
-    $('#recent-purchases-listing').DataTable({
-      "aLengthMenu": [
-        [5, 10, 15, -1],
-        [5, 10, 15, "All"]
-      ],
-      "iDisplayLength": 10,
-      "language": {
-        search: ""
-      },
-      searching: false, paging: false, info: false
-    });
+    // $('#recent-purchases-listing').DataTable({
+    //   "aLengthMenu": [
+    //     [5, 10, 15, -1],
+    //     [5, 10, 15, "All"]
+    //   ],
+    //   "iDisplayLength": 10,
+    //   "language": {
+    //     search: ""
+    //   },
+    //   searching: false, paging: false, info: false
+    // });
 
   });
 })(jQuery);
