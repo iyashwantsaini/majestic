@@ -40,7 +40,7 @@ import random
 import time 
 import numpy
 
-import nltk
+'''import nltk
 from nltk.stem.lancaster import LancasterStemmer
 stemmer = LancasterStemmer()
 
@@ -50,7 +50,7 @@ import tensorflow
 import random
 import json
 import pickle
-import os
+import os'''
 #socketio
 
 titles_list = []
