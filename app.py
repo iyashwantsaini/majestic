@@ -1,6 +1,7 @@
 import os
 import re
 import arxiv
+from scihub import SciHub
 import pandas as pd
 from bs4 import BeautifulSoup
 from flask import Flask, redirect, url_for, flash, render_template,request
