@@ -193,11 +193,18 @@
 
                   <form class="form-inline" method="post" action="{{ url_for('found') }}">
 
-                    <label class="sr-only" for="inlineFormInputGroupUsername2">IEEE or Arxiv or Nature</label>
+                    <select name="engine" class="mb-2 mr-sm-2 form-control" id="exampleFormControlSelect2" style="width: 150px;">
+                          <option>IEEE</option>
+                          <option>Arxiv</option>
+                          <option>Nature</option>
+                          <option>Scholar</option>
+                    </select>
+
+                    <!-- <label class="sr-only" for="inlineFormInputGroupUsername2">IEEE or Arxiv or Nature</label>
                     <div class="input-group mb-2 mr-sm-2">
                       <input type="text" name="engine" class="form-control" enctype="multipart/form-data"
                         placeholder="IEEE or Arxiv">
-                    </div>
+                    </div> -->
 
                     <label class="sr-only" for="inlineFormInputGroupUsername2">Topic</label>
                     <div class="input-group mb-2 mr-sm-2">
