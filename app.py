@@ -230,8 +230,9 @@ def found():
 
 
         if __name__=="__main__":
-            search = input("Enter the search keyword: ")
-            noOfLinks = int(input("Enter the number of articles required: "))
+            
+            search = keyword
+            noOfLinks = noofresults
             x = search.split(" ")
             search = "+".join(x)
             i = 0
