@@ -329,12 +329,11 @@ def found():
                 links_list.append('https://ieeexplore.ieee.org'+record["documentLink"])
                 date_list.append(record["publicationDate"])
                 citation_list.append(record["citationCount"])
-                abstract_list.append(record["abstract"])
-                #author_list.append(record["authors"])
-                '''if record["doi"] == '' or None :
-                    doi_list.append("none")
+                key='abstract'
+                if key in record:
+                   abstract_list.append(record['abstract'])
                 else:
-                    doi_list.append(record["doi"])'''
+                   abstract_list.append('Abstract not present')
         
             d = {"Title": titles_list, "Abstract" : abstract_list , "Link": links_list, "Publication Date": date_list,  "No of Citations" : citation_list  }
 
