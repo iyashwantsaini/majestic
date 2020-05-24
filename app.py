@@ -557,6 +557,14 @@ def handleMessage(msg):
           elif (ele=='Verb'):
               val=ok['Verb'][0]
     send(val)
+                              
+@socketio.on('sci')
+def handleMessage(msg):
+    msg =msg.lower()
+    sh = SciHub()
+    result = sh.fetch(msg) 
+    ok=result['url']
+    send(ok)
 
 #socketio
 # @app.route( '/' )
