@@ -218,6 +218,52 @@ def found():
           data = pd.concat([data,data_tmp]).reset_index(drop=True) #dataframe
         return render_template('searchengine.html',tables=[data.to_html(render_links=True,classes=['table table-bordered'])])
     
+    
+    
+    elif branch=='scholar':
+        headings = []
+        links = []
+
+        def getdata(url):
+            r = requests.get(url)
+            return r.text
+
+
+        if __name__=="__main__":
+            search = input("Enter the search keyword: ")
+            noOfLinks = int(input("Enter the number of articles required: "))
+            x = search.split(" ")
+            search = "+".join(x)
+            i = 0
+            while i<1000:
+                data = getdata(f"https://scholar.google.com/scholar?start={i}&q={search}")
+                soup = BeautifulSoup(data, "lxml")
+                # print(soup.prettify())
+                terms = soup.findAll('a')
+                for term in terms:
+                    if ".pdf" in term["href"]:
+                        links.append(term['href'])
+                for term in terms:
+                    if ".pdf" in term["href"]:
+                        x = soup.findAll('a', attrs={"data-clk-atid": term["data-clk-atid"]})
+                        for y in x:
+                            z = y.getText()
+                            if "[PDF]" in z:
+                                pass
+                            else:
+                                headings.append(z)
+                i+=10
+
+            d = {"Title": headings, "PDFLink": links}
+
+            df = pd.DataFrame(d)	
+
+            print("Titles and PDF links are as follow:")
+            if df.index.stop >= noOfLinks:
+                fdf = df[:noOfLinks]
+            else:
+                fdf = df
+            return render_template('searchengine.html',tables=[fdf.to_html(render_links=True,classes=['table table-bordered'])],current_user=current_user);
     elif branch=='nature':
         headings = []
         alinks = []
