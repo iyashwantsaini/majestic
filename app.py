@@ -53,13 +53,6 @@ import pickle
 import os'''
 #socketio
 
-titles_list = []
-links_list = []
-date_list = []
-abstract_list=[]
-citation_list=[]
-abstract_list=[]
-author_list=[]
 obj = NLP()
 nlp = pipeline('question-answering')
 app = Flask(__name__)
@@ -224,6 +217,13 @@ def found():
           data = pd.concat([data,data_tmp]).reset_index(drop=True) #dataframe
         return render_template('searchengine.html',tables=[data.to_html(render_links=True,classes=['table table-bordered'])]);
     elif branch=='ieee':
+        titles_list = []
+        links_list = []
+        date_list = []
+        abstract_list=[]
+        citation_list=[]
+        abstract_list=[]
+        author_list=[]
         page_no = 1
         no = math.ceil(noofresults/25)
         for page_no in range(1, no+1):
