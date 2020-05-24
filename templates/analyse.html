@@ -25,7 +25,10 @@
 
     $(document).ready(function () {
       var socket = io.connect('http://' + document.domain + ':' + location.port);
-      socket.on('connect', function () {});
+      socket.on('connect', function () {
+        setBotResponse("Hey! I am dictionary Bot :)");
+        setBotResponse("Enter word to get meaning!");
+      });
       socket.on('message', function (msg) {
         setBotResponse(msg);
       });
