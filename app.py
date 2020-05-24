@@ -215,7 +215,84 @@ def found():
           published = result[i]['published']
           data_tmp = pd.DataFrame({"Title":title, "Published Date":published, "Download Link":arxiv_url},index=[0])
           data = pd.concat([data,data_tmp]).reset_index(drop=True) #dataframe
-        return render_template('searchengine.html',tables=[data.to_html(render_links=True,classes=['table table-bordered'])]);
+        return render_template('searchengine.html',tables=[data.to_html(render_links=True,classes=['table table-bordered'])])
+    
+    elif branch=='nature':
+        headings = []
+        alinks = []
+        abstracts = []
+        datePublished = []
+        authors = []
+
+
+        # Get data from website
+        def getdata(url):
+            r = requests.get(url)
+            return r.text
+
+
+        if __name__=="__main__":
+
+            # Getting initial soup
+            search = keyword
+            noOfResults = noofresults
+            x = search.split(" ")
+            search = "+".join(x)
+            data = getdata(f"https://www.nature.com/search?q={search}")
+            soup = BeautifulSoup(data, "lxml")
+
+            # Getting Headings
+            terms = soup.findAll('span', attrs={"class" : "visually-hidden"})
+            terms = terms[6:]
+            terms = terms[:-9]
+            for term in terms[:noOfResults]:
+                term = term.getText()[12:]
+                term = term [:-49]
+                headings.append(term)
+
+            # Getting Links
+            links = soup.findAll('a', attrs={"data-track-action": "search result"})
+            for link in links[:noOfResults]:
+                alinks.append(f"https://www.nature.com{link['href']}")
+
+
+
+            # Getting abstracts, publication dates and authors
+            for alink in alinks[:noOfResults]:
+                dt = getdata(alink)
+                sp = BeautifulSoup(dt, "lxml")
+                tm = sp.find('div', attrs={"class" : "c-article-section__content"})
+                date = sp.find('time', attrs={"itemprop" : "datePublished"})
+                author = sp.findAll('a', attrs={"data-test" : "author-name"})
+
+                if len(author)>0:
+                    auth = []
+                    for autho in author:
+                        auth.append(autho.getText())
+                    authors.append(auth)
+                else:
+                    authors.append("Authors not mentioned")
+
+                if date:
+                    datePublished.append(date.getText())
+                else:
+                    datePublished.append("Date Published not mentioned")
+
+
+                if tm:
+                    tm = tm.find("p").getText()
+                    abstracts.append(tm)
+                else:
+                    abstracts.append("Abstract Not Available")
+
+
+            # Creating dictionary of the lists
+            d = {"Heading": headings, "ArticleLink": alinks, "ArticleAbstract": abstracts, "PublicationDate": datePublished, "Authors": authors}
+
+            # Creating dataframe
+            df = pd.DataFrame(d)
+            return render_template('searchengine.html',tables=[df.to_html(render_links=True,classes=['table table-bordered'])],current_user=current_user);                 
+                              
     elif branch=='ieee':
         titles_list = []
         links_list = []
