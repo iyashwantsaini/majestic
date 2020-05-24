@@ -42,7 +42,8 @@
           } else {
             e.preventDefault();
             setUserResponse(text);
-            socket.send(text);
+//             socket.send(text);
+            socket.emit('sci',text);
             $("#mymessage").blur();
             return false;
           }
@@ -57,7 +58,8 @@
         } else {
           e.preventDefault();
           setUserResponse(text);
-              socket.send(text);
+//               socket.send(text);
+          socket.emit('sci',text);
           $("#mymessage").blur();
           return false;
         }
