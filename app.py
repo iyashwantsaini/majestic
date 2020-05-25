@@ -559,11 +559,14 @@ def handleMessage(msg):
               val=ok['Verb'][0]
     send(val)
                               
-@socketio.on('sci')
+@socketio.on('my event')
 def handleMessage(msg):
     msg =msg.lower()
-    key='https://sci-hub.tw/'+msg                 
-    send(key)
+    print(msg) 
+    key='https://sci-hub.tw/'+str(msg)    
+    print(key)             
+    emit('my response',key)
+    # send(key)
 
 #socketio
 # @app.route( '/' )
