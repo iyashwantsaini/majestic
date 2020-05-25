@@ -27,7 +27,7 @@
         setBotResponse("Hey! I am SciHub Bot :)");
         setBotResponse("Enter Link or DOI to get download link!");
       });
-      socket.on('sci', function (msg) {
+      socket.on('my response', function (msg) {
         setBotResponse(msg);
       });
 
@@ -43,7 +43,7 @@
             e.preventDefault();
             setUserResponse(text);
 //             socket.send(text);
-            socket.emit('sci',text);
+            socket.emit('my event',text);
             $("#mymessage").blur();
             return false;
           }
@@ -59,7 +59,7 @@
           e.preventDefault();
           setUserResponse(text);
 //               socket.send(text);
-          socket.emit('sci',text);
+          socket.emit('my event',text);
           $("#mymessage").blur();
           return false;
         }
