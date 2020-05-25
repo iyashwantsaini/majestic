@@ -562,10 +562,8 @@ def handleMessage(msg):
 @socketio.on('sci')
 def handleMessage(msg):
     msg =msg.lower()
-    sh = SciHub()
-    result = sh.fetch(msg) 
-    ok=result['url']
-    send(ok)
+    key='https://sci-hub.tw/'+msg                 
+    send(key)
 
 #socketio
 # @app.route( '/' )
