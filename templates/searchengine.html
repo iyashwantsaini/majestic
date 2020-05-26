@@ -24,7 +24,7 @@
     $(document).ready(function () {
       var socket = io.connect('http://' + document.domain + ':' + location.port);
       socket.on('connect', function () {
-        setBotResponse("Hey! I am SciHub Bot :)");
+        setBotResponse("Hey! I am Download Bot :)");
         setBotResponse("Enter Link or DOI to get download link!");
       });
       socket.on('my response', function (msg) {
