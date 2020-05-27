@@ -8,7 +8,7 @@ from flask import Flask, redirect, url_for, flash, render_template,request
 import requests
 import pandas as pd
 from PyDictionary import PyDictionary
-from flask_ngrok import run_with_ngrok
+#from flask_ngrok import run_with_ngrok
 import math
 from werkzeug.utils import secure_filename
 from tika import parser
@@ -58,7 +58,7 @@ import os'''
 obj = NLP()
 nlp = pipeline('question-answering')
 app = Flask(__name__)
-run_with_ngrok(app)
+#run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'secretkey123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
@@ -226,7 +226,10 @@ def found():
         links = []
 
         def getdata(url):
-            r = requests.get(url)
+            headers = {
+	        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0"
+	        }
+	        r = requests.get(url,headers=headers)
             return r.text
 
 
@@ -677,7 +680,9 @@ def handleMessage(msg):
 
 if __name__ == "__main__":
     db.create_all()
+    socketio.run( app, debug = True )
+    app.run(host='0.0.0.0',port=4040,debug=True)                          
     # app.run(debug=True,use_reloader=True)
     # app.run(debug=True)
-    app.run()
-    socketio.run( app, debug = True )
+    
+    #socketio.run( app, debug = True )
