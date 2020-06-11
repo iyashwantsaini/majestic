@@ -15,11 +15,31 @@
   <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="shortcut icon" href="../static/images/idea.svg" />
+  <link rel="stylesheet" href="../static/css/hopscotch.css">
+  <script src="../static/js/jquery.js"></script>
 </head>
 
 <body>
   <!-- socketio -->
   <script type="text/javascript">
+    if(localStorage.getItem('third') === null){
+           $(document).ready(function() {
+   hopscotch.startTour(myTour);
+});}
+    localStorage.setItem('third', "thisalsono")
+        var myTour = {
+    id: "myTour",
+    steps: [
+      {
+        title: "Key Chatbot",
+        content: "I am your Research Paper Download bot . You can paste your link here to get a direct download link of paper.",
+        target: "#linkbot",
+        placement: "left"
+      },
+
+    ]
+};
+
 
     $(document).ready(function () {
       var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -107,7 +127,7 @@
           </div>
         </div>
         <!--===============CHAT ON BUTTON START===============-->
-        <div class="chat_on">
+        <div id="linkbot" class="chat_on">
           <span class="material-icons">
             vpn_key
           </span> 
@@ -258,6 +278,7 @@
   <script src="../static/js/hoverable-collapse.js"></script>
   <script src="../static/js/template.js"></script>
   <script src="../static/js/file-upload.js"></script>
+  <script src="../static/js/hopscotch.js"></script>
 </body>
 
 </html>

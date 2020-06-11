@@ -16,12 +16,50 @@
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="shortcut icon" href="../static/images/idea.svg" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+  <link rel="stylesheet" href="../static/css/hopscotch.css">
+  <script src="../static/js/jquery.js"></script>
   
 </head>
 
 <body>
   <!-- socketio -->
   <script type="text/javascript">
+
+          if(localStorage.getItem('second') === null){
+           $(document).ready(function() {
+   hopscotch.startTour(myTour);
+});}
+    localStorage.setItem('second', "alsono")
+        var myTour = {
+    id: "myTour",
+    steps: [
+      {
+        title: "Wordcloud",
+        content: "It helps you find all the top keywords of your paper in a pictorial representation so that you can use it anywhere.",
+        target: "#wordcloud",
+        placement: "right"
+      },
+      {
+        title: "Summarization",
+        content: "Gives a Page by Page summary of your paper",
+        target: "#summary",
+        placement: "right"
+      },
+      {
+        title: "Question Answer",
+        content: "You can ask any question related to your paper given answer should be present in paper. ",
+        target: "#qna",
+        placement: "right"
+      },
+            {
+        title: "Dictionary Chatbot",
+        content: "Give me a word and I will give you it's meaning.",
+        target: "#dictbot",
+        placement: "left"
+      },
+    ]
+};
+
 
     $(document).ready(function () {
       var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -107,7 +145,7 @@
           </div>
         </div>
         <!--===============CHAT ON BUTTON START===============-->
-        <div class="chat_on">
+        <div id="dictbot" class="chat_on">
           <span class="material-icons">
             book
           </span> 
@@ -166,21 +204,21 @@
             </a>
           </li>
 
-          <li class="nav-item">
+          <li id="wordcloud" class="nav-item">
             <a class="nav-link" href="{{ url_for('wordcloud', pdf_id=pdf.id) }}">
               <i class="mdi mdi-chart-pie menu-icon"></i>
               <span class="menu-title">Wordcloud</span>
             </a>
           </li>
 
-          <li class="nav-item">
+          <li id="summary" class="nav-item">
             <a class="nav-link" href="{{ url_for('summarization', pdf_id=pdf.id) }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Summarization</span>
             </a>
           </li>
 
-          <li class="nav-item">
+          <li id="qna" class="nav-item">
             <a class="nav-link" href="{{ url_for('qna_render', pdf_id=pdf.id) }}">
               <i class="mdi mdi-emoticon menu-icon"></i>
               <span class="menu-title">QnA</span>
@@ -249,6 +287,7 @@
   <script src="../static/js/hoverable-collapse.js"></script>
   <script src="../static/js/template.js"></script>
   <script src="../static/js/file-upload.js"></script>
+  <script src="../static/js/hopscotch.js"></script>
   
 </body>
 {% else %}

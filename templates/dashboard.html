@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../static/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="shortcut icon" href="../static/images/idea.png" />
+  <link rel="stylesheet" href="../static/css/hopscotch.css">
+  <script src="../static/js/jquery.js"></script>
   
 </head>
 
@@ -116,6 +118,39 @@
     </div> -->
   
   <!-- body -->
+  <script>
+      if(localStorage.getItem('first') === null){
+           $(document).ready(function() {
+   hopscotch.startTour(myTour);
+});}
+    localStorage.setItem('first', "no")
+
+        var myTour = {
+    id: "myTour",
+    steps: [
+      {
+        title: "Dashboard",
+        content: "You can see your previously uploaded papers. You can click on any paper to read it.",
+        target: "#dashboard",
+        placement: "right"
+      },
+      {
+        title: "Search Engine",
+        content: "Search Millions of papers from top Journals",
+        target: "#search",
+        placement: "right"
+      },
+      {
+        title: "Upload",
+        content: "You can upload your Research Papers here to read them anytime anywhere. 📑",
+        target: "#upload",
+        placement: "right"
+      },
+    ]
+};
+     
+
+    </script>
 
   <div class="container-scroller">
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -146,7 +181,7 @@
     <div class="container-fluid page-body-wrapper">
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item">
+          <li id="dashboard" class="nav-item">
             <form action="{{ url_for('dashboard') }}" method="post">
               <a class="nav-link" href="/dashboard">
                 <i class="mdi mdi-home menu-icon"></i>
@@ -154,14 +189,14 @@
               </a>
           </li>
 
-          <li class="nav-item">
+          <li id="search" class="nav-item">
             <form action="{{ url_for('searchengine') }}" method="post">
               <a class="nav-link" href="/searchengine">
                 <i class="mdi mdi-view-headline menu-icon"></i>
                 <span class="menu-title">Search Engine</span>
               </a>
           </li>
-          <li class="nav-item">
+          <li id="upload" class="nav-item">
             <a class="nav-link" href="/upload">
               <i class="mdi mdi-chart-pie menu-icon"></i>
               <span class="menu-title">Upload</span>
@@ -273,6 +308,7 @@
   <script src="../static/js/hoverable-collapse.js"></script>
   <script src="../static/js/template.js"></script>
   <script src="../static/js/dashboard.js"></script>
+  <script src="../static/js/hopscotch.js"></script>
 
 </body>
 {% else %}
