@@ -680,8 +680,9 @@ def handleMessage(msg):
 
 if __name__ == "__main__":
     db.create_all()
+    app.run(host='0.0.0.0',port=4040,debug=True)
     socketio.run( app, debug = True )
-    app.run(host='0.0.0.0',port=4040,debug=True)                          
+                              
     # app.run(debug=True,use_reloader=True)
     # app.run(debug=True)
     
